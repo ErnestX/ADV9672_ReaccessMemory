@@ -38,7 +38,7 @@ export function MemoryContours() {
     var lineWidth = 1.2 + 0.6 / numOfEpisodes * e;
     svg
     .append('path')
-    .attr("id", e.toString())
+    .attr("id", "episode".concat(e.toString()))
     .on("click", function(){
       alert("Clicked on contour #".concat(e.toString()));
     })
@@ -60,9 +60,12 @@ export function MemoryContours() {
     // .attr("stroke-width", lineWidth/2);
   }
 
-  // d3
-  // .select('path#3')
-  // .transition().attr("d", curve);
+  d3
+  .select('#episode3')
+  .transition()
+  .duration(5000)
+  .attr("transform","scale(2)")
+  .attr("stroke-width", lineWidth/2);
 }
 
 function rgb(r, g, b){
