@@ -6,7 +6,7 @@
 export function MemoryContours() {
   var width = 500;
   var height = 500;
-  var basePoints = [[50, 50], [50, 450], [450, 400], [450, 50]];
+  var basePoints = [[50, 50], [50, 450], [450, 200], [450, 50]];
 
   const svg = d3.select("#SvgContour")
   .append("svg")
@@ -18,19 +18,20 @@ export function MemoryContours() {
   const curve = d3.line().curve(d3.curveBasisClosed);
 
   var basePointsAverage = [0,0];
-  for (let i = 0; i < basePoints.length; i++){
+  for (let i = 0; i < basePoints.length; i++) {
     basePointsAverage[0] += basePoints[i][0];
     basePointsAverage[1] += basePoints[i][1];
   }
   basePointsAverage[0] /= basePoints.length;
   basePointsAverage[1] /= basePoints.length;
+  console.log(basePointsAverage);
 
-  var numOfEpisodes = 5;
+  var numOfEpisodes = 7;
+  var currentPoints = basePoints;
   for (let e = 0; e < numOfEpisodes; e++) {
-    var currentPoints = basePoints;
     for (let i = 0; i < currentPoints.length; i++) {
-      currentPoints[i][0] += (basePointsAverage[0] - currentPoints[i][0]) / numOfEpisodes * i;
-      currentPoints[i][1] += (basePointsAverage[1] - currentPoints[i][1]) / numOfEpisodes * i;
+      currentPoints[i][0] += (basePointsAverage[0] - currentPoints[i][0]) / numOfEpisodes;
+      currentPoints[i][1] += (basePointsAverage[1] - currentPoints[i][1]) / numOfEpisodes;
     }
     svg
     .append('path')
@@ -64,7 +65,7 @@ export function DensityContours(data, {
   yRange = [height - marginBottom, marginTop] // [bottom, top]
 } = {}) {
 
-  console.log("creating contour");
+  //console.log("creating contour");
 
   // Compute values.
   const X = d3.map(data, x);
