@@ -6,7 +6,8 @@
 export function MemoryContours() {
   var width = 300;
   var height = 300;
-  var points = [[50, 50], [50, 100], [150, 200], [100, 50], [50, 50]];
+  var points = [[50, 50], [50, 100], [150, 200], [100, 50]];
+  var points2 = [[55, 50], [55, 100], [160, 100], [190, 80]];
 
   const svg = d3.select("#SvgContour")
   .append("svg")
@@ -23,6 +24,16 @@ export function MemoryContours() {
   .attr("stroke-linejoin", "round")
   .attr("fill", "white")
   .attr("stroke", "steelblue")
+  .attr("stroke-width", 1)
+  .selectAll("path")
+  .join("path");
+
+  svg
+  .append('path')
+  .attr('d', curve(points2))
+  .attr("stroke-linejoin", "round")
+  .attr("fill", "white")
+  .attr("stroke", "red")
   .attr("stroke-width", 1)
   .selectAll("path")
   .join("path");
