@@ -4,8 +4,8 @@
 
 
 export function MemoryContours() {
-  var width = 500;
-  var height = 500;
+  var width = 1000;
+  var height = 1000;
   var basePoints = [[50, 50], [50, 450], [450, 200], [450, 50]];
 
   const svg = d3.select("#SvgContour")
@@ -38,6 +38,7 @@ export function MemoryContours() {
     var lineWidth = 1.2 + 0.6 / numOfEpisodes * e;
     svg
     .append('path')
+    .attr("id", e.toString())
     .on("click", function(){
       alert("Clicked on contour #".concat(e.toString()));
     })
@@ -45,8 +46,17 @@ export function MemoryContours() {
     .attr("stroke-linejoin", "round")
     .attr("fill", "black")
     .attr("stroke", lineColor)
-    .attr("stroke-width", lineWidth);
+    .attr("stroke-width", lineWidth)
+    .transition()
+    .duration(2000)
+    .attr("transform","scale(2)")
+    .attr("stroke-width", lineWidth/2);
   }
+
+  d3
+  .select('path#3')
+  .transition().attr("d", curve);
+
 }
 
 function rgb(r, g, b){
