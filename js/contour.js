@@ -1,15 +1,6 @@
-//import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7";
-// const div = d3.selectAll("div");
-
-export function Hello() {
-  alert('Hello, World! 222222222222222222222');
-}
-
 // Copyright 2021 Observable, Inc.
 // Released under the ISC license.
 // https://observablehq.com/@d3/density-contours
-
-
 
 export function DensityContours(data, {
   x = ([x]) => x, // given d in data, returns the (quantitative) x-value
@@ -33,13 +24,12 @@ export function DensityContours(data, {
   yRange = [height - marginBottom, marginTop] // [bottom, top]
 } = {}) {
 
-  
-  console.log("running1");
+  console.log("creating contour");
+
   // Compute values.
   const X = d3.map(data, x);
   const Y = d3.map(data, y);
   const I = d3.range(data.length);
-  console.log("running2");
 
   const svg = d3.select("#svgcontainer2")
     .append("svg")
