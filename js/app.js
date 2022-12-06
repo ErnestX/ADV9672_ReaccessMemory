@@ -9,5 +9,6 @@ DensityContours(eruptions, {
   yLabel: "Erupting (min.)",
   width: 600,
   height: 600,
-  stroke: "steelblue"
+  stroke: "steelblue",
+  fill: "white"
 })

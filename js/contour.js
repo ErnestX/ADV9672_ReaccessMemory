@@ -31,7 +31,7 @@ export function DensityContours(data, {
   const Y = d3.map(data, y);
   const I = d3.range(data.length);
 
-  const svg = d3.select("#svgcontainer2")
+  const svg = d3.select("#SvgContour")
     .append("svg")
     .attr("width", width)
     .attr("height", height)
