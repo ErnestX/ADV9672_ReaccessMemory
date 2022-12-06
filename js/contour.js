@@ -33,39 +33,34 @@ export function MemoryContours() {
       currentPoints[i][0] += (basePointsAverage[0] - currentPoints[i][0]) / numOfEpisodes;
       currentPoints[i][1] += (basePointsAverage[1] - currentPoints[i][1]) / numOfEpisodes;
     }
+    var eId = "episode".concat(e.toString());
     var lc = 175 + 80 / numOfEpisodes * e;
     var lineColor = rgb(lc,lc,lc);
     var lineWidth = 1.2 + 0.6 / numOfEpisodes * e;
     svg
     .append('path')
-    .attr("id", "episode".concat(e.toString()))
+    .attr("id", eId)
     .on("click", function(){
-      alert("Clicked on contour #".concat(e.toString()));
+      console.log("Clicked on contour #".concat(e.toString()));
+      animateSelection(this.id);
     })
     .attr('d', curve(currentPoints))
     .attr("stroke-linejoin", "round")
     .attr("fill", "black")
     .attr("stroke", lineColor)
     .attr("stroke-width", lineWidth);
-    // .transition()
-    // .duration(5000)
-    // .attrTween('d',function(){
-    //   var interpolator = d3.interpolate(currentPoints,basePoints)
-    //   return function(t){
-    //     console.log(curve(interpolator(t))); 
-    //     return curve(interpolator(t))
-    //   };}); 
-    //.attr('d', curve(basePoints)); 
-    // .attr("transform","scale(2)")
-    // .attr("stroke-width", lineWidth/2);
   }
+}
 
+function animateSelection(episodeId) {
+  console.log("animating id: ".concat(episodeId));
   d3
-  .select('#episode3')
+  .select('path#'.concat(episodeId))
   .transition()
   .duration(5000)
   .attr("transform","scale(2)")
-  .attr("stroke-width", lineWidth/2);
+  .attr("stroke-width", 1)
+  .attr("stroke", rgb(255, 255, 255));
 }
 
 function rgb(r, g, b){
