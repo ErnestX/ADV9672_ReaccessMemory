@@ -6,7 +6,7 @@
 export function MemoryContours() {
   var width = 1000;
   var height = 1000;
-  var basePoints = [[50, 50], [50, 450], [450, 200], [450, 50]];
+  var basePoints = [[50, 50], [50, 450], [500,500], [500, 950], [900, 800], [850, 500], [450, 200], [450, 50]];
 
   const svg = d3.select("#SvgContour")
   .append("svg")
@@ -46,17 +46,23 @@ export function MemoryContours() {
     .attr("stroke-linejoin", "round")
     .attr("fill", "black")
     .attr("stroke", lineColor)
-    .attr("stroke-width", lineWidth)
-    .transition()
-    .duration(2000)
-    .attr("transform","scale(2)")
-    .attr("stroke-width", lineWidth/2);
+    .attr("stroke-width", lineWidth);
+    // .transition()
+    // .duration(5000)
+    // .attrTween('d',function(){
+    //   var interpolator = d3.interpolate(currentPoints,basePoints)
+    //   return function(t){
+    //     console.log(curve(interpolator(t))); 
+    //     return curve(interpolator(t))
+    //   };}); 
+    //.attr('d', curve(basePoints)); 
+    // .attr("transform","scale(2)")
+    // .attr("stroke-width", lineWidth/2);
   }
 
-  d3
-  .select('path#3')
-  .transition().attr("d", curve);
-
+  // d3
+  // .select('path#3')
+  // .transition().attr("d", curve);
 }
 
 function rgb(r, g, b){
