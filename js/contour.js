@@ -4,10 +4,9 @@
 
 
 export function MemoryContours() {
-  var width = 300;
-  var height = 300;
-  var points = [[50, 50], [50, 100], [150, 200], [100, 50]];
-  var points2 = [[55, 50], [55, 100], [160, 100], [190, 80]];
+  var width = 500;
+  var height = 500;
+  var basePoints = [[50, 50], [50, 450], [450, 400], [450, 50]];
 
   const svg = d3.select("#SvgContour")
   .append("svg")
@@ -18,25 +17,29 @@ export function MemoryContours() {
 
   const curve = d3.line().curve(d3.curveBasisClosed);
 
-  svg
-  .append('path')
-  .attr('d', curve(points))
-  .attr("stroke-linejoin", "round")
-  .attr("fill", "white")
-  .attr("stroke", "steelblue")
-  .attr("stroke-width", 1)
-  .selectAll("path")
-  .join("path");
+  var basePointsAverage = [0,0];
+  for (let i = 0; i < basePoints.length; i++){
+    basePointsAverage[0] += basePoints[i][0];
+    basePointsAverage[1] += basePoints[i][1];
+  }
+  basePointsAverage[0] /= basePoints.length;
+  basePointsAverage[1] /= basePoints.length;
 
-  svg
-  .append('path')
-  .attr('d', curve(points2))
-  .attr("stroke-linejoin", "round")
-  .attr("fill", "white")
-  .attr("stroke", "red")
-  .attr("stroke-width", 1)
-  .selectAll("path")
-  .join("path");
+  var numOfEpisodes = 5;
+  for (let e = 0; e < numOfEpisodes; e++) {
+    var currentPoints = basePoints;
+    for (let i = 0; i < currentPoints.length; i++) {
+      currentPoints[i][0] += (basePointsAverage[0] - currentPoints[i][0]) / numOfEpisodes * i;
+      currentPoints[i][1] += (basePointsAverage[1] - currentPoints[i][1]) / numOfEpisodes * i;
+    }
+    svg
+    .append('path')
+    .attr('d', curve(currentPoints))
+    .attr("stroke-linejoin", "round")
+    .attr("fill", "white")
+    .attr("stroke", "steelblue")
+    .attr("stroke-width", 1);
+  }
 }
 
 export function DensityContours(data, {
