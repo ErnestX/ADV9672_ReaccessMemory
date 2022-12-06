@@ -1,12 +1,16 @@
-// Copyright 2021 Observable, Inc.
-// Released under the ISC license.
-// https://observablehq.com/@d3/density-contours
+import { rgb, twoLevelCopyArr } from "./utilities.js";
 
-var width = 1000;
-var height = 1000;
+var width = 1500;
+var height = 1200;
 var basePoints = [[50, 50], [50, 450], [500,500], [500, 950], [900, 800], [850, 500], [450, 200], [450, 50]];
-var basePointsCopy = [[50, 50], [50, 450], [500,500], [500, 950], [900, 800], [850, 500], [450, 200], [450, 50]];
+var maxPoints = [[50, 50], [50, 450], [500,500], [500, 950], [900, 800], [850, 500], [450, 200], [450, 50]].map((coord) => [coord[0] * 1.2, coord[1] * 1.2]);
 const curve = d3.line().curve(d3.curveBasisClosed);
+var episodeIds = [];
+var episodePoints = [];
+var episodeLineWeights = [];
+var episodeLineColors = [];
+
+var selectedId = "";
 
 export function MemoryContours() {
   const svg = d3.select("#SvgContour")
@@ -32,16 +36,23 @@ export function MemoryContours() {
       currentPoints[i][0] += (basePointsAverage[0] - currentPoints[i][0]) / numOfEpisodes;
       currentPoints[i][1] += (basePointsAverage[1] - currentPoints[i][1]) / numOfEpisodes;
     }
-    var eId = "episode".concat(e.toString());
     var lc = 175 + 80 / numOfEpisodes * e;
     var lineColor = rgb(lc,lc,lc);
     var lineWidth = 1.2 + 0.6 / numOfEpisodes * e;
+
+    var eId = "episode".concat(e.toString());
+    episodeIds.push(eId);
+    episodePoints.push(twoLevelCopyArr(currentPoints));
+    episodeLineWeights.push(lineWidth);
+    episodeLineColors.push(lineColor);
+
     svg
     .append('path')
     .attr("id", eId)
     .on("click", function(){
       console.log("Clicked on contour #".concat(e.toString()));
       animateSelection(this.id);
+      selectedId = this.id;
     })
     .attr('d', curve(currentPoints))
     .attr("stroke-linejoin", "round")
@@ -52,17 +63,55 @@ export function MemoryContours() {
 }
 
 function animateSelection(episodeId) {
-  console.log("animating id: ".concat(episodeId));
-  console.log(basePointsCopy);
+  console.log("animating selected id: ".concat(episodeId));
   d3
   .select('path#'.concat(episodeId))
   .transition()
-  .duration(5000)
+  .duration(2000)
   .attr("stroke-width", 1)
   .attr("stroke", rgb(255, 255, 255))
-  .attr('d', curve(basePointsCopy));
+  .attr('d', curve(maxPoints));
+
+  for (let i = 0; i < episodeIds.length; i++){
+    if (episodeIds[i] !== episodeId) {
+        animateDismissed(episodeIds[i]);
+    }
+  }
 }
 
-function rgb(r, g, b){
-  return ["rgb(",r,",",g,",",b,")"].join("");
+export function Unselect() {
+  if (selectedId === "") {
+    return;
+  }
+  var episodeId = selectedId;
+  for (let i = 0; i < episodeIds.length; i++){
+    if (episodeIds[i] !== episodeId) {
+      animateUndismissing(episodeIds[i]);
+    } else {
+      d3
+      .select('path#'.concat(episodeId))
+      .transition()
+      .duration(2000)
+      .attr("stroke-width", episodeLineWeights[i])
+      .attr("stroke", episodeLineColors[i])
+      .attr('d', curve(episodePoints[i]));
+    }
+  }
+}
+
+function animateDismissed(episodeId) {
+  console.log("animating unselected id: ".concat(episodeId));
+  d3
+  .select('path#'.concat(episodeId))
+  .transition()
+  .duration(1500)
+  .style('opacity', 0.0);
+}
+
+function animateUndismissing(episodeId) {
+  d3
+  .select('path#'.concat(episodeId))
+  .transition()
+  .duration(1500)
+  .style('opacity', 1.0);
 }
