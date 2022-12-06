@@ -1,15 +1,33 @@
-import { MemoryContours, Unselect } from "./contour.js";
+import { CreateContours, Unselect } from "./contour.js";
+import { World } from "./world.js";
 
-MemoryContours();
-// function equalToEventTarget() {
-//   return this == d3.event.target;
-// }
-// var allSvgs = d3.selectAll("#SvgContour *");
-// d3.select("body").on("click",function(){
-//   var clickedOutside = allSvgs.filter(equalToEventTarget).empty();
-//   if (clickedOutside) {
-//        Unselect();
-//   }
-// });
+var width = 1500;
+var height = 1200;
+const svg = d3.select("#SvgContour")
+.append("svg")
+.attr("width", width)
+.attr("height", height)
+.attr("viewBox", [0, 0, width, height])
+.attr("style", "max-width: 100%; height: auto; height: intrinsic;");
 
-document.onkeydown = function(){console.log("key down"); Unselect();};
+const world = new World(1);
+world.render(svg);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// CreateContours();
+// document.onkeydown = function(){console.log("key down"); Unselect();};

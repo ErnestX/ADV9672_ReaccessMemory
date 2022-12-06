@@ -12,7 +12,7 @@ var episodeLineColors = [];
 
 var selectedId = "";
 
-export function MemoryContours() {
+export function CreateContours() {
   const svg = d3.select("#SvgContour")
   .append("svg")
   .attr("width", width)
@@ -30,7 +30,7 @@ export function MemoryContours() {
   console.log(basePointsAverage);
 
   var numOfEpisodes = 5;
-  var currentPoints = basePoints.slice();
+  var currentPoints = twoLevelCopyArr(basePoints);
   for (let e = 0; e < numOfEpisodes; e++) {
     for (let i = 0; i < currentPoints.length; i++) {
       currentPoints[i][0] += (basePointsAverage[0] - currentPoints[i][0]) / numOfEpisodes;
@@ -39,8 +39,8 @@ export function MemoryContours() {
     var lc = 175 + 80 / numOfEpisodes * e;
     var lineColor = rgb(lc,lc,lc);
     var lineWidth = 1.2 + 0.6 / numOfEpisodes * e;
-
     var eId = "episode".concat(e.toString());
+    
     episodeIds.push(eId);
     episodePoints.push(twoLevelCopyArr(currentPoints));
     episodeLineWeights.push(lineWidth);
