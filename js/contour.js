@@ -2,20 +2,19 @@
 // Released under the ISC license.
 // https://observablehq.com/@d3/density-contours
 
+var width = 1000;
+var height = 1000;
+var basePoints = [[50, 50], [50, 450], [500,500], [500, 950], [900, 800], [850, 500], [450, 200], [450, 50]];
+var basePointsCopy = [[50, 50], [50, 450], [500,500], [500, 950], [900, 800], [850, 500], [450, 200], [450, 50]];
+const curve = d3.line().curve(d3.curveBasisClosed);
 
 export function MemoryContours() {
-  var width = 1000;
-  var height = 1000;
-  var basePoints = [[50, 50], [50, 450], [500,500], [500, 950], [900, 800], [850, 500], [450, 200], [450, 50]];
-
   const svg = d3.select("#SvgContour")
   .append("svg")
   .attr("width", width)
   .attr("height", height)
   .attr("viewBox", [0, 0, width, height])
   .attr("style", "max-width: 100%; height: auto; height: intrinsic;");
-
-  const curve = d3.line().curve(d3.curveBasisClosed);
 
   var basePointsAverage = [0,0];
   for (let i = 0; i < basePoints.length; i++) {
@@ -26,8 +25,8 @@ export function MemoryContours() {
   basePointsAverage[1] /= basePoints.length;
   console.log(basePointsAverage);
 
-  var numOfEpisodes = 7;
-  var currentPoints = basePoints;
+  var numOfEpisodes = 5;
+  var currentPoints = basePoints.slice();
   for (let e = 0; e < numOfEpisodes; e++) {
     for (let i = 0; i < currentPoints.length; i++) {
       currentPoints[i][0] += (basePointsAverage[0] - currentPoints[i][0]) / numOfEpisodes;
@@ -54,13 +53,14 @@ export function MemoryContours() {
 
 function animateSelection(episodeId) {
   console.log("animating id: ".concat(episodeId));
+  console.log(basePointsCopy);
   d3
   .select('path#'.concat(episodeId))
   .transition()
   .duration(5000)
-  .attr("transform","scale(2)")
   .attr("stroke-width", 1)
-  .attr("stroke", rgb(255, 255, 255));
+  .attr("stroke", rgb(255, 255, 255))
+  .attr('d', curve(basePointsCopy));
 }
 
 function rgb(r, g, b){
