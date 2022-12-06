@@ -2,6 +2,32 @@
 // Released under the ISC license.
 // https://observablehq.com/@d3/density-contours
 
+
+export function MemoryContours() {
+  var width = 300;
+  var height = 300;
+  var points = [[50, 50], [50, 100], [150, 200], [100, 50], [50, 50]];
+
+  const svg = d3.select("#SvgContour")
+  .append("svg")
+  .attr("width", width)
+  .attr("height", height)
+  .attr("viewBox", [0, 0, width, height])
+  .attr("style", "max-width: 100%; height: auto; height: intrinsic;");
+
+  const curve = d3.line().curve(d3.curveBasisClosed);
+
+  svg
+  .append('path')
+  .attr('d', curve(points))
+  .attr("stroke-linejoin", "round")
+  .attr("fill", "white")
+  .attr("stroke", "steelblue")
+  .attr("stroke-width", 1)
+  .selectAll("path")
+  .join("path");
+}
+
 export function DensityContours(data, {
   x = ([x]) => x, // given d in data, returns the (quantitative) x-value
   y = ([, y]) => y, // given d in data, returns the (quantitative) y-value
@@ -31,7 +57,7 @@ export function DensityContours(data, {
   const Y = d3.map(data, y);
   const I = d3.range(data.length);
 
-  const svg = d3.select("#SvgContour")
+  const svg = d3.select("#SvgContour0")
     .append("svg")
     .attr("width", width)
     .attr("height", height)
@@ -56,6 +82,8 @@ export function DensityContours(data, {
     .bandwidth(bandwidth)
     .thresholds(thresholds)
     (I);
+
+console.log(contours);
 
   svg.append("g")
     .attr("stroke-linejoin", "round")
