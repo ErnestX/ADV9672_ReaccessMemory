@@ -49,10 +49,6 @@ export function DensityContours(data, {
     .domain(yDomain).nice()
     .rangeRound(yRange);
 
-  const xAxis = d3.axisBottom(xScale).tickSizeOuter(0);
-
-  const yAxis = d3.axisLeft(yScale).tickSizeOuter(0);
-
   const contours = d3.contourDensity()
     .x(i => xScale(X[i]))
     .y(i => yScale(Y[i]))
@@ -60,26 +56,6 @@ export function DensityContours(data, {
     .bandwidth(bandwidth)
     .thresholds(thresholds)
     (I);
-
-  svg.append("g")
-    .attr("transform", `translate(0,${height - marginBottom})`)
-    .call(xAxis)
-    .call(g => g.select(".domain").remove())
-    .call(g => g.select(".tick:last-of-type text").clone()
-      .attr("y", -3)
-      .attr("dy", null)
-      .attr("font-weight", "bold")
-      .text(xLabel));
-
-  svg.append("g")
-    .attr("transform", `translate(${marginLeft},0)`)
-    .call(yAxis)
-    .call(g => g.select(".domain").remove())
-    .call(g => g.select(".tick:last-of-type text").clone()
-      .attr("x", 3)
-      .attr("text-anchor", "start")
-      .attr("font-weight", "bold")
-      .text(yLabel));
 
   svg.append("g")
     .attr("stroke-linejoin", "round")
@@ -93,15 +69,4 @@ export function DensityContours(data, {
     .attr("stroke", typeof stroke === "function" ? d => stroke(d.value) : null)
     .attr("stroke-width", typeof strokeWidth === "function" ? (d, i) => strokeWidth(d.value, i) : null)
     .attr("d", d3.geoPath());
-
-  svg.append("g")
-    .attr("stroke", "white")
-    .selectAll("circle")
-    .data(I)
-    .join("circle")
-    .attr("cx", i => xScale(X[i]))
-    .attr("cy", i => yScale(Y[i]))
-    .attr("r", 2);
-
-  // return svg.node();
 }
