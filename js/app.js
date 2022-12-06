@@ -26,16 +26,23 @@ svg.append("circle")
 //eruptions = d3.FileAttachment("faithful.tsv").tsv({typed: true})
 //eruptions = Object.assign(d3.tsvParse(await FileAttachment("faithful.tsv").text(), ({waiting: x, eruptions: y}) => ({x: +x, y: +y})), {x: "Idle (min.)", y: "Erupting (min.)"})
 
+var eruptions = [{x: 79, y: 3.6}, {x: 54, y: 1.8}, {x: 74, y: 3.333}, {x: 62, y: 2.283}, {x: 85, y: 4.533}, {x: 55, y: 2.883}, {x: 88, y: 4.7}, {x: 85, y: 3.6}, {x: 51, y: 1.95}, {x: 85, y: 4.35}, {x: 54, y: 1.833}, {x: 84, y: 3.917}, {x: 78, y: 4.2}, {x: 47, y: 1.75}, {x: 83, y: 4.7}, {x: 52, y: 2.167}, {x: 62, y: 1.75}, {x: 84, y: 4.8}, {x: 52, y: 1.6}, {x: 79, y: 4.25}];
 
-chart = DensityContours(eruptions, {
-  x: d => d.waiting,
-  y: d => d.eruptions,
+DensityContours(eruptions, {
+  x: d => d.x,//waiting,
+  y: d => d.y,//eruptions,
   xLabel: "Idle (min.) ",
   yLabel: "Erupting (min.)",
   width,
   height: 600,
   stroke: "steelblue"
 })
+
+
+
+
+
+
 
 // return chart;
 
