@@ -5,6 +5,8 @@ var eruptions = [{x: 79, y: 3.6}, {x: 54, y: 1.8}, {x: 74, y: 3.333}, {x: 62, y:
 
 MemoryContours();
 
+// $('#testing').on('click',function(){ alert("Hello! I am an alert box!!"); });
+
 DensityContours(eruptions, {
   x: d => d.x,
   y: d => d.y,

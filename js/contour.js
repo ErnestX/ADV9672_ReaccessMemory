@@ -35,6 +35,9 @@ export function MemoryContours() {
     }
     svg
     .append('path')
+    .on("click", function(){
+      alert("Hello! I am an alert box #".concat(e.toString()));
+    })
     .attr('d', curve(currentPoints))
     .attr("stroke-linejoin", "round")
     .attr("fill", "white")
