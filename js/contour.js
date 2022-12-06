@@ -62,26 +62,6 @@ export function DensityContours(data, {
     (I);
 
   svg.append("g")
-    .attr("transform", `translate(0,${height - marginBottom})`)
-    .call(xAxis)
-    .call(g => g.select(".domain").remove())
-    .call(g => g.select(".tick:last-of-type text").clone()
-      .attr("y", -3)
-      .attr("dy", null)
-      .attr("font-weight", "bold")
-      .text(xLabel));
-
-  svg.append("g")
-    .attr("transform", `translate(${marginLeft},0)`)
-    .call(yAxis)
-    .call(g => g.select(".domain").remove())
-    .call(g => g.select(".tick:last-of-type text").clone()
-      .attr("x", 3)
-      .attr("text-anchor", "start")
-      .attr("font-weight", "bold")
-      .text(yLabel));
-
-  svg.append("g")
     .attr("stroke-linejoin", "round")
     .attr("fill", typeof fill === "function" ? null : fill)
     .attr("stroke", typeof stroke === "function" ? null : stroke)
