@@ -1,4 +1,3 @@
-
 import { Mountain } from "./mountain.js";
 
 export class World {
@@ -21,7 +20,7 @@ export class World {
 
   selectEpisode(eId) {
     for (let i = 0; i < this.mountains.length; i++) {
-      this.mountains[i].animateSelection(eId);
+      this.mountains[i].animateSelecting(eId);
     }
   }
 

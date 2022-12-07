@@ -1,4 +1,3 @@
-import { CreateContours, Unselect } from "./contour.js";
 import { World } from "./world.js";
 
 var width = 1500;
@@ -14,21 +13,3 @@ const world = new World(1);
 world.render(svg);
 
 document.onkeydown = function(){console.log("key down"); world.unselect();};
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// CreateContours();
-// document.onkeydown = function(){console.log("key down"); Unselect();};

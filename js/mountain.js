@@ -54,7 +54,7 @@ export class Mountain {
     }
   }
 
-  animateSelection(episodeId) {
+  animateSelecting(episodeId) {
     console.log("animating selected id: ".concat(episodeId));
 
     for (let i = 0; i < this.episodes.length; i++){
