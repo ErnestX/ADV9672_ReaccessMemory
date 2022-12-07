@@ -12,4 +12,6 @@ const svg = d3.select("#SvgContour")
 const world = new World(1);
 world.render(svg);
 
-document.onkeydown = function(){console.log("key down"); world.unselect();};
+document.onkeydown = function(){ 
+  world.unselect(); 
+};

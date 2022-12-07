@@ -1,4 +1,5 @@
 import { Mountain } from "./mountain.js";
+import { AppState } from "./appState.js";
 
 export class World {
   constructor(numOfMountains) {
@@ -19,12 +20,20 @@ export class World {
   }
 
   selectEpisode(eId) {
+    if (AppState.state !== 0) {
+      return;
+    }
+    AppState.state = 1;
     for (let i = 0; i < this.mountains.length; i++) {
       this.mountains[i].animateSelecting(eId);
     }
   }
 
   unselect() {
+    if (AppState.state !== 1) {
+      return;
+    }
+    AppState.state = 0;
     for (let i = 0; i < this.mountains.length; i++) {
       this.mountains[i].animateUnselecting();
     }

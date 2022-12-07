@@ -1,5 +1,6 @@
 import { rgb, twoLevelCopyArr } from "./utilities.js";
 
+
 export class Episode {
   constructor(m, lw, lc, pts, maxPts, id) {
     this.mountain = m;
@@ -20,7 +21,6 @@ export class Episode {
     .attr("id", this.identity)
     .on("click", function () {
         thisObj.mountain.selectEpisode(this.id);
-        thisObj.isSelected = true;
     })
     .attr('d', this.contourCurve(this.points))
     .attr("stroke-linejoin", "round")
@@ -30,6 +30,7 @@ export class Episode {
   }
 
   animateSelected() {
+    this.isSelected = true;
     d3
     .select('path#'.concat(this.identity))
     .transition()
@@ -40,6 +41,7 @@ export class Episode {
   }
 
   animateUnselected() {
+    this.isSelected = false;
     d3
       .select('path#'.concat(this.identity))
       .transition()
@@ -50,6 +52,7 @@ export class Episode {
   }
 
   animateDismissed() {
+    console.log("Dismissed: ".concat(this.identity));
     d3
     .select('path#'.concat(this.identity))
     .transition()
@@ -58,10 +61,11 @@ export class Episode {
   }
 
   animateUndismissed() {
+    console.log("Undismissed: ".concat(this.identity));
     d3
     .select('path#'.concat(this.identity))
     .transition()
     .duration(1500)
-    .style('opacity', 1.0); 
+    .style('opacity', 1.0);
   }
 }
