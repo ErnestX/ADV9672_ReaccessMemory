@@ -44,10 +44,19 @@ export class Mountain {
     this.world.selectEpisode(eId);
   }
 
+  animateUnselecting() {
+    for (let i = 0; i < this.episodes.length; i++){
+      if (this.episodes[i].isSelected) {
+        this.episodes[i].animateUnselected();
+      } else {
+        this.episodes[i].animateUndismissed();
+      }
+    }
+  }
+
   animateSelection(episodeId) {
     console.log("animating selected id: ".concat(episodeId));
 
-  
     for (let i = 0; i < this.episodes.length; i++){
       if (this.episodes[i].identity !== episodeId) {
         this.episodes[i].animateDismissed();

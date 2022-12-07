@@ -27,7 +27,7 @@ export class World {
 
   unselect() {
     for (let i = 0; i < this.mountains.length; i++) {
-      this.mountains[i].unselect();
+      this.mountains[i].animateUnselecting();
     }
   }
 }
