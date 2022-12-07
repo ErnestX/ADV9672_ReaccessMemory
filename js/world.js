@@ -9,7 +9,7 @@ export class World {
 
     var basePoints = [[50, 50], [50, 450], [500,500], [500, 950], [900, 800], [850, 500], [450, 200], [450, 50]];
     for (let i = 0; i < numOfMountains; i++) {
-      this.mountains.push(new Mountain(this, basePoints, 7));
+      this.mountains.push(new Mountain(this, basePoints, 7, i.toString()));
     }
   }
 
@@ -22,6 +22,12 @@ export class World {
   selectEpisode(eId) {
     for (let i = 0; i < this.mountains.length; i++) {
       this.mountains[i].animateSelection(eId);
+    }
+  }
+
+  unselect() {
+    for (let i = 0; i < this.mountains.length; i++) {
+      this.mountains[i].unselect();
     }
   }
 }

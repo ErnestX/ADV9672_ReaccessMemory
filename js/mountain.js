@@ -2,10 +2,11 @@ import { rgb, twoLevelCopyArr } from "./utilities.js";
 import { Episode } from "./episode.js";
 
 export class Mountain {
-  constructor(w, bps, esCount){
+  constructor(w, bps, esCount, lbl){
     this.world = w;
     this.basePoints = bps;
     this.maxPoints = twoLevelCopyArr(this.basePoints).map((coord) => [coord[0] * 1.2, coord[1] * 1.2]);;
+    this.label = lbl;
     this.episodes = [];
 
     var basePointsAverage = [0, 0];
@@ -27,7 +28,7 @@ export class Mountain {
       var lc = 175 + 80 / esCount * e;
       var lineColor = rgb(lc, lc, lc);
       var lineWidth = 1.2 + 0.6 / esCount * e;
-      var eId = "episode".concat(e.toString());
+      var eId = "mtn".concat(this.label.concat("episode".concat(e.toString())));
 
       this.episodes.push(new Episode(this, lineWidth, lineColor, twoLevelCopyArr(currentPoints),this.maxPoints ,eId));
     }
