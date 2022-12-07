@@ -1,3 +1,5 @@
 export class AppState {
-    static state = 0; /// 0: default state; 1: episode selected and displayed
+    /// 0: default state
+    /// 1: an episode is selected and displayed
+    static state = 0; 
 }

@@ -7,10 +7,11 @@ export class World {
     this.height = 1200;
     this.mountains = [];
 
-    var basePoints = [[50, 50], [50, 450], [500,500], [500, 950], [900, 800], [850, 500], [450, 200], [450, 50]];
-    for (let i = 0; i < numOfMountains; i++) {
-      this.mountains.push(new Mountain(this, basePoints, 7, i.toString()));
-    }
+    var basePoints1 = [[50, 50], [50, 450], [450, 300], [600, 50]];
+    var basePoints2 = [[150,500], [300, 750], [700, 700], [750, 200]];
+
+    this.mountains.push(new Mountain(this, basePoints1, 4, "A"));
+    this.mountains.push(new Mountain(this, basePoints2, 6, "B"));
   }
 
   render(svg) {

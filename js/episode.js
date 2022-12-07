@@ -1,6 +1,5 @@
 import { rgb, twoLevelCopyArr } from "./utilities.js";
 
-
 export class Episode {
   constructor(m, lw, lc, pts, maxPts, id) {
     this.mountain = m;

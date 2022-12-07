@@ -21,16 +21,17 @@ export class Mountain {
 
     // init episodes
     for (let e = 0; e < esCount; e++) {
-      for (let i = 0; i < currentPoints.length; i++) {
-        currentPoints[i][0] += (basePointsAverage[0] - currentPoints[i][0]) / esCount;
-        currentPoints[i][1] += (basePointsAverage[1] - currentPoints[i][1]) / esCount;
-      }
       var lc = 175 + 80 / esCount * e;
       var lineColor = rgb(lc, lc, lc);
       var lineWidth = 1.2 + 0.6 / esCount * e;
       var eId = "mtn".concat(this.label.concat("episode".concat(e.toString())));
 
       this.episodes.push(new Episode(this, lineWidth, lineColor, twoLevelCopyArr(currentPoints),this.maxPoints ,eId));
+
+      for (let i = 0; i < currentPoints.length; i++) {
+        currentPoints[i][0] += (basePointsAverage[0] - currentPoints[i][0]) / esCount;
+        currentPoints[i][1] += (basePointsAverage[1] - currentPoints[i][1]) / esCount;
+      }
     }
   } 
 
