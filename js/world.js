@@ -1,4 +1,4 @@
-import { rgb, twoLevelCopyArr } from "./utilities.js";
+
 import { Mountain } from "./mountain.js";
 
 export class World {
@@ -16,6 +16,12 @@ export class World {
   render(svg) {
     for (let i = 0; i < this.mountains.length; i++) {
       this.mountains[i].render(svg);
+    }
+  }
+
+  selectEpisode(eId) {
+    for (let i = 0; i < this.mountains.length; i++) {
+      this.mountains[i].animateSelection(eId);
     }
   }
 }

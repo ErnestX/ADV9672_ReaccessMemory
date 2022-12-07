@@ -29,13 +29,30 @@ export class Mountain {
       var lineWidth = 1.2 + 0.6 / esCount * e;
       var eId = "episode".concat(e.toString());
 
-      this.episodes.push(new Episode(this, lineWidth, lineColor, twoLevelCopyArr(currentPoints), eId));
+      this.episodes.push(new Episode(this, lineWidth, lineColor, twoLevelCopyArr(currentPoints),this.maxPoints ,eId));
+    }
+  } 
+
+  render(svg) {
+    for (let i = 0; i < this.episodes.length; i++) {
+      this.episodes[i].render(svg);
     }
   }
 
-    render(svg) {
-      for (let i = 0; i < this.episodes.length; i++) {
-            this.episodes[i].render(svg);
-        }
+  selectEpisode(eId) {
+    this.world.selectEpisode(eId);
+  }
+
+  animateSelection(episodeId) {
+    console.log("animating selected id: ".concat(episodeId));
+
+  
+    for (let i = 0; i < this.episodes.length; i++){
+      if (this.episodes[i].identity !== episodeId) {
+        this.episodes[i].animateDismissed();
+      } else {
+        this.episodes[i].animateSelected();
+      }
     }
+  }
 }
