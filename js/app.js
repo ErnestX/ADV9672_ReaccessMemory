@@ -9,7 +9,7 @@ const svg = d3.select("#SvgContour")
 .attr("viewBox", [0, 0, width, height])
 .attr("style", "max-width: 100%; height: auto; height: intrinsic;");
 
-const world = new World(1);
+const world = new World(5);
 world.render(svg);
 
 document.onkeydown = function(){ 

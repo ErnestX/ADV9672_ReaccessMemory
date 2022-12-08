@@ -67,7 +67,7 @@ export class Episode {
   }
 
   animateDismissed() {
-    console.log("Dismissed: ".concat(this.identity));
+    //console.log("Dismissed: ".concat(this.identity));
     d3
     .select('path#'.concat(this.identity))
     .transition()
@@ -76,7 +76,7 @@ export class Episode {
   }
 
   animateUndismissed() {
-    console.log("Undismissed: ".concat(this.identity));
+    //console.log("Undismissed: ".concat(this.identity));
     d3
     .select('path#'.concat(this.identity))
     .transition()

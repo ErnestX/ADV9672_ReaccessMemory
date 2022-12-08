@@ -1,6 +1,7 @@
-import { uuidv4 } from "./utilities.js";
+import { uuidv4, mapRange } from "./utilities.js";
 import { Mountain } from "./mountain.js";
 import { AppState } from "./appState.js";
+import {Delaunay} from "https://cdn.skypack.dev/d3-delaunay@6";
 
 export class World {
   constructor(numOfMountains) {
@@ -8,11 +9,22 @@ export class World {
     this.height = 1200;
     this.mountains = [];
 
-    var basePoints1 = [[50, 50], [50, 450], [450, 300], [600, 50]];
-    var basePoints2 = [[150,500], [300, 750], [700, 700], [750, 200]];
+    var padding = Math.max(this.width, this.height) / 4;
+    var mountainBasePoints = [];
+    for (let i = 0; i < numOfMountains; i++) {
+      let x = mapRange(Math.random(), 0.0, 1.0, padding, this.width-padding);
+      let y = mapRange(Math.random(), 0.0, 1.0, padding, this.height-padding);
+      mountainBasePoints.push([x, y]);
+    }
+    console.log(mountainBasePoints);
+    let voronoiDiagram = Delaunay.from(mountainBasePoints)
+    .voronoi([0, 0, this.width, this.height]);
 
-    this.mountains.push(new Mountain(this, basePoints1, 4, "mtn".concat(uuidv4())));
-    this.mountains.push(new Mountain(this, basePoints2, 6, "mtn".concat(uuidv4())));
+    for (let i = 0; i < numOfMountains; i++) {
+      let polygonVertexes = voronoiDiagram.cellPolygon(i);
+      polygonVertexes.pop(); // the last point repeats the first point
+      this.mountains.push(new Mountain(this, polygonVertexes, 5, "mtn".concat(uuidv4())));
+    }
   }
 
   render(svg) {
@@ -43,6 +55,7 @@ export class World {
 
   combineEpisodeAtMtn(eId, mLb) {
     console.log("Combining ".concat(eId));
+    
   }
 
   combineWithEpisodeAtMtn(eId, mLb) {
