@@ -18,7 +18,6 @@ export class Episode {
     svg
     .append('path')
     .attr("id", thisObj.identity)
-
     .attr('d', this.contourCurve(this.points))
     .attr("stroke-linejoin", "round")
     .attr("fill", "black")
@@ -30,7 +29,7 @@ export class Episode {
     .on("mouseover", function() {
       d3
       .select('path#'.concat(thisObj.identity))
-      .attr("fill", "white");
+      .attr("fill", "grey");
     })
     .on("mouseout", function() {
       d3
@@ -38,14 +37,10 @@ export class Episode {
       .attr("fill", "black");
     })
     .on("mousedown", function() {
-      d3
-      .select('path#'.concat(thisObj.identity))
-      .attr("fill", "grey");
+      thisObj.mountain.combineEpisode(thisObj.identity);
     })
     .on("mouseup", function() {
-      d3
-      .select('path#'.concat(thisObj.identity))
-      .attr("fill", "black");
+      thisObj.mountain.combineWithEpisode(thisObj.identity);
     });
   }
 

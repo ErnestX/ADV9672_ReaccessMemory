@@ -1,4 +1,4 @@
-import { rgb, twoLevelCopyArr } from "./utilities.js";
+import { rgb, twoLevelCopyArr, uuidv4 } from "./utilities.js";
 import { Episode } from "./episode.js";
 
 export class Mountain {
@@ -24,7 +24,7 @@ export class Mountain {
       var lc = 175 + 80 / esCount * e;
       var lineColor = rgb(lc, lc, lc);
       var lineWidth = 1.2 + 0.6 / esCount * e;
-      var eId = "mtn".concat(this.label.concat("episode".concat(e.toString())));
+      var eId = "mtn".concat(this.label.concat("episode".concat(uuidv4())));
 
       this.episodes.push(new Episode(this, lineWidth, lineColor, twoLevelCopyArr(currentPoints),this.maxPoints ,eId));
 
@@ -41,10 +41,6 @@ export class Mountain {
     }
   }
 
-  selectEpisode(eId) {
-    this.world.selectEpisode(eId);
-  }
-
   animateUnselecting() {
     for (let i = 0; i < this.episodes.length; i++){
       if (this.episodes[i].isSelected) {
@@ -56,8 +52,7 @@ export class Mountain {
   }
 
   animateSelecting(episodeId) {
-    console.log("animating selected id: ".concat(episodeId));
-
+    //console.log("animating selected id: ".concat(episodeId));
     for (let i = 0; i < this.episodes.length; i++){
       if (this.episodes[i].identity !== episodeId) {
         this.episodes[i].animateDismissed();
@@ -65,5 +60,17 @@ export class Mountain {
         this.episodes[i].animateSelected();
       }
     }
+  }
+  
+  selectEpisode(eId) {
+    this.world.selectEpisode(eId);
+  }
+
+  combineEpisode(eId){
+    this.world.combineEpisodeAtMtn(eId, this.label);
+  }
+
+  combineWithEpisode(eId){
+    this.world.combineWithEpisodeAtMtn(eId, this.label);
   }
 }
