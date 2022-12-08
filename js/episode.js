@@ -17,15 +17,36 @@ export class Episode {
     var thisObj = this;
     svg
     .append('path')
-    .attr("id", this.identity)
-    .on("click", function () {
-        thisObj.mountain.selectEpisode(this.id);
-    })
+    .attr("id", thisObj.identity)
+
     .attr('d', this.contourCurve(this.points))
     .attr("stroke-linejoin", "round")
     .attr("fill", "black")
     .attr("stroke", this.lineColor)
-    .attr("stroke-width", this.lineWeight);
+    .attr("stroke-width", this.lineWeight)
+    .on("click", function () {
+      thisObj.mountain.selectEpisode(thisObj.identity);
+    })
+    .on("mouseover", function() {
+      d3
+      .select('path#'.concat(thisObj.identity))
+      .attr("fill", "white");
+    })
+    .on("mouseout", function() {
+      d3
+      .select('path#'.concat(thisObj.identity))
+      .attr("fill", "black");
+    })
+    .on("mousedown", function() {
+      d3
+      .select('path#'.concat(thisObj.identity))
+      .attr("fill", "grey");
+    })
+    .on("mouseup", function() {
+      d3
+      .select('path#'.concat(thisObj.identity))
+      .attr("fill", "black");
+    });
   }
 
   animateSelected() {
