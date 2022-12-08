@@ -42,10 +42,10 @@ export class World {
   }
 
   combineEpisodeAtMtn(eId, mLb) {
-    
+    console.log("Combining ".concat(eId));
   }
 
   combineWithEpisodeAtMtn(eId, mLb) {
-    
+    console.log("--> with ".concat(eId));
   }
 }

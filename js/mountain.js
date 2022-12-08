@@ -24,7 +24,7 @@ export class Mountain {
       var lc = 175 + 80 / esCount * e;
       var lineColor = rgb(lc, lc, lc);
       var lineWidth = 1.2 + 0.6 / esCount * e;
-      var eId = "mtn".concat(this.label.concat("episode".concat(uuidv4())));
+      var eId = this.label.concat("episode".concat(uuidv4()));
 
       this.episodes.push(new Episode(this, lineWidth, lineColor, twoLevelCopyArr(currentPoints),this.maxPoints ,eId));
 
