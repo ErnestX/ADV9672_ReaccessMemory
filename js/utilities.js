@@ -3,7 +3,7 @@ export function rgb(r, g, b) {
 }
   
 export function twoLevelCopyArr(array) {
-  var newArray = [];
+  let newArray = [];
   for (let i = 0; i < array.length; i++) {
     newArray.push(array[i].slice());
   }

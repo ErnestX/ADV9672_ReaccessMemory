@@ -14,7 +14,7 @@ export class Episode {
   }
 
   render(svg) {
-    var thisObj = this;
+    let thisObj = this;
     svg
     .append('path')
     .attr("id", thisObj.identity)

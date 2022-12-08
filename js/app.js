@@ -1,7 +1,8 @@
 import { World } from "./world.js";
 
-var width = 1500;
-var height = 1200;
+let width = 1500;
+let height = 1200;
+
 document.getElementById('SvgContour').style.width = width.toString().concat("px");
 document.getElementById('SvgContour').style.height = height.toString().concat("px");
 

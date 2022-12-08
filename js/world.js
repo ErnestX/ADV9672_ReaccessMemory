@@ -9,8 +9,8 @@ export class World {
     this.height = h;
     this.mountains = [];
 
-    var padding = Math.max(this.width, this.height) / 4;
-    var mountainBasePoints = [];
+    let padding = Math.max(this.width, this.height) / 4;
+    let mountainBasePoints = [];
     for (let i = 0; i < numOfMountains; i++) {
       let x = mapRange(Math.random(), 0.0, 1.0, padding, this.width-padding);
       let y = mapRange(Math.random(), 0.0, 1.0, padding, this.height-padding);
