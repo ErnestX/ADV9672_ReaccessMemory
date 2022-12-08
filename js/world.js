@@ -4,9 +4,9 @@ import { AppState } from "./appState.js";
 import {Delaunay} from "https://cdn.skypack.dev/d3-delaunay@6";
 
 export class World {
-  constructor(numOfMountains) {
-    this.width = 1500;
-    this.height = 1200;
+  constructor(w, h, numOfMountains) {
+    this.width = w;
+    this.height = h;
     this.mountains = [];
 
     var padding = Math.max(this.width, this.height) / 4;

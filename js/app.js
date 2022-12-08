@@ -2,6 +2,9 @@ import { World } from "./world.js";
 
 var width = 1500;
 var height = 1200;
+document.getElementById('SvgContour').style.width = width.toString().concat("px");
+document.getElementById('SvgContour').style.height = height.toString().concat("px");
+
 const svg = d3.select("#SvgContour")
 .append("svg")
 .attr("width", width)
@@ -9,7 +12,7 @@ const svg = d3.select("#SvgContour")
 .attr("viewBox", [0, 0, width, height])
 .attr("style", "max-width: 100%; height: auto; height: intrinsic;");
 
-const world = new World(5);
+const world = new World(width, height, 5);
 world.render(svg);
 
 document.onkeydown = function(){ 

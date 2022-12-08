@@ -25,13 +25,12 @@ export class Mountain {
       var lineColor = rgb(lc, lc, lc);
       var lineWidth = 1.2 + 0.6 / esCount * e;
       var eId = this.label.concat("episode".concat(uuidv4()));
-
-      this.episodes.push(new Episode(this, lineWidth, lineColor, twoLevelCopyArr(currentPoints),this.maxPoints ,eId));
-
       for (let i = 0; i < currentPoints.length; i++) {
         currentPoints[i][0] += (basePointsAverage[0] - currentPoints[i][0]) / esCount;
         currentPoints[i][1] += (basePointsAverage[1] - currentPoints[i][1]) / esCount;
       }
+
+      this.episodes.push(new Episode(this, lineWidth, lineColor, twoLevelCopyArr(currentPoints),this.maxPoints ,eId));
     }
   } 
 
