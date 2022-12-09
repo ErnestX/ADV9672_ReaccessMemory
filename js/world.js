@@ -31,7 +31,7 @@ export class World {
   }
 
   render() {
-    d3.selectAll("svg > *").remove();
+    d3.select("svg").remove();
     const svg = d3.select("#SvgContour")
     .append("svg")
     .attr("width", this.width)

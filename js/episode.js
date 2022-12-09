@@ -25,7 +25,10 @@ export class Episode {
 
     return new Episode(eps1.mountains.concat(eps2.mountains), 
     (eps1.lineWeight + eps2.lineWeight)/2.0, 
-    blendColors(eps1.lineColor, eps2.lineColor), combinedPoints, combinedPoints, "episode".concat(uuidv4())); // fix: max points
+    blendColors(eps1.lineColor, eps2.lineColor), 
+    combinedPoints, 
+    combinedPoints * 2, 
+    "episode".concat(uuidv4())); // fix: max points
   }
 
   render(svg) {
