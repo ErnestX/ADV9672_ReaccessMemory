@@ -30,7 +30,15 @@ export class World {
     }
   }
 
-  render(svg) {
+  render() {
+    d3.selectAll("svg > *").remove();
+    const svg = d3.select("#SvgContour")
+    .append("svg")
+    .attr("width", this.width)
+    .attr("height", this.height)
+    .attr("viewBox", [0, 0, this.width, this.height])
+    .attr("style", "max-width: 100%; height: auto; height: intrinsic;");
+
     for (let i = 0; i < this.mountains.length; i++) {
       this.mountains[i].render(svg);
     }
@@ -75,6 +83,7 @@ export class World {
       }
     }
     Mountain.combineEpisodes(this.getMountains(this.mtnsOfEpisodeToCombine), this.getMountains(mLbs), this.episodeToCombine, eId);
+    this.render();
   }
 
   getMountains(mLbs) {

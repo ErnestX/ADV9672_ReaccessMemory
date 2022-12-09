@@ -1,4 +1,4 @@
-import { rgb, twoLevelCopyArr, uuidv4 } from "./utilities.js";
+import { rgb, twoLevelCopyArr, uuidv4, blendColors } from "./utilities.js";
 
 export class Episode {
   constructor(w, m, lw, lc, pts, maxPts, id) {
@@ -23,7 +23,9 @@ export class Episode {
     
     let combinedPoints = eps1Points.splice(insertPoint, 0, eps2Points);
 
-    return new Episode(eps1.mountains.concat(eps2.mountains), eps1.lineWeight, eps1.lineColor, combinedPoints, combinedPoints, "episode".concat(uuidv4())); // fix: weight, color, max points
+    return new Episode(eps1.mountains.concat(eps2.mountains), 
+    (eps1.lineWeight + eps2.lineWeight)/2.0, 
+    blendColors(eps1.lineColor, eps2.lineColor), combinedPoints, combinedPoints, "episode".concat(uuidv4())); // fix: max points
   }
 
   render(svg) {

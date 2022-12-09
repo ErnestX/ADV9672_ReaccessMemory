@@ -40,7 +40,20 @@ export class Mountain {
     if (epsId1 !== epsId2) {
       let combinedEps = Episode.combineEpisodes(mtns1[0].getEpisode(epsId1), mtns2[0].getEpisode(epsId2));
       // replace with combinedEps at each mountain
+      for (let i = 0; i < mtns1.length; i++) {
+        mtns1[i].replaceEpisodeAtIdWithEpisode(epsId1, combinedEps);
+      }
+      for (let i = 0; i < mtns2.length; i++) {
+        mtns2[i].replaceEpisodeAtIdWithEpisode(epsId2, combinedEps);
+      }
+      }
+  }
 
+  replaceEpisodeAtIdWithEpisode(eIdToReplace, newEpisode) {
+    for (let i = 0; i < this.episodes.length; i++) {
+      if (this.episodes[i].identity === eIdToReplace) {
+        this.episodes[i] = newEpisode;
+      }
     }
   }
 
