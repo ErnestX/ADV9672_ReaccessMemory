@@ -48,67 +48,30 @@ export class World {
     .attr("viewBox", [0, 0, this.width, this.height])
     .attr("style", "max-width: 100%; height: auto; height: intrinsic;");
 
-    let didRenderAnEpisode = true;
     while (this.totalEpisodesCountIncludingDuplicates() > 0) {
-      console.log(this.totalEpisodesCountIncludingDuplicates());
-      didRenderAnEpisode = false;
-
-      // Step1: render all episodes that belong to only one mountain
-      // index advances only when the mountain has an episode rendered
       for (let i = 0; i < this.mountains.length; i++) {
         let eps = this.mountains[i].episodes[0]; // take the bottom episode
-        if (typeof eps !== 'undefined' && eps.mountains.length < 2) {
-          eps.render(svg);
-          this.mountains[i].recoverableShiftEpisodes();
-          didRenderAnEpisode = true;
-        }
-      }
-      if (didRenderAnEpisode) {
-        continue;
-      }
-
-      // Step2: if no episode is rendered, 
-      // check if an episode is at the bottom of the rendering lists for all the mountains it belongs to. 
-      // Render if true. 
-      let epsIdsLeft = [];
-      let epsesLeft = [];
-      // create a list of all episodes left
-      for (let i = 0; i < this.mountains.length; i++) {
-        let eps = this.mountains[i].episodes[0]; // care only about the bottom episode
         if (typeof eps !== 'undefined') {
-          let epsId = eps.identity;
-          epsIdsLeft.push(epsId);
-          epsesLeft.push(eps);
-        }
-      }
-searchLoop:
-      for (let i = 0; i < epsIdsLeft.length; i++) {
-        let idToCheck = epsIdsLeft[i];
-        let epsForTheId = epsesLeft[i]; // assumption: epsIdsLeft and epsesLeft corresponds to each other at the same index
-        let count = 0;
-        for (let j = 0; j < epsIdsLeft.length; j++) {
-          if (idToCheck === epsIdsLeft[j]) {
-            count++;
-          }
-        }
-        if (epsForTheId.mountains.length <= count) {
-          // The episode appears the same number of times as it has mountains, 
-          // so all of the mountains this episode belongs to have it at the bottom of the rendering list! 
-          // Render. 
-          epsForTheId.render(svg);
-          didRenderAnEpisode = true;
-          // find the indexes for this episode in renderIndexes and advance them
-          for (let m = 0; m < this.mountains.length; m++) {
-            let e = this.mountains[m].episodes[0];
-            if (typeof e !== 'undefined' && idToCheck === e.identity) {
-              // just rendered this. remove the bottom episode
-              this.mountains[m].recoverableShiftEpisodes();
+          if (eps.mountains.length < 2) {
+            eps.render(svg);
+            this.mountains[i].recoverableShiftEpisodes();
+          } else {
+            let readyToRender = true;
+            for (let m = 0; m < eps.mountains.length; m++) {
+              if (eps.mountains[m].episodes[0].identity !== eps.identity) {
+                readyToRender = false;
+              }
+            }
+            if (readyToRender) {
+              eps.render(svg);
+              for (let m = 0; m < eps.mountains.length; m++) {
+                eps.mountains[m].recoverableShiftEpisodes();
+              }
             }
           }
         }
-        break searchLoop; // didn't update epsIdsLeft, epsForTheId, etc., so this can be done only once
-      } 
-    } 
+      }
+    }
     for (let i = 0; i < this.mountains.length; i++) {
       this.mountains[i].recoverEpisodes(); // recover from pops and shifts
       console.log(this.mountains[i].episodes);
