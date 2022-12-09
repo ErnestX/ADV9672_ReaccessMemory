@@ -57,11 +57,11 @@ export class Mountain {
     }
   }
 
-  render(svg) {
-    for (let i = 0; i < this.episodes.length; i++) {
-      this.episodes[i].render(svg);
-    }
-  }
+  // render(svg) {
+  //   for (let i = 0; i < this.episodes.length; i++) {
+  //     this.episodes[i].render(svg);
+  //   }
+  // }
 
   animateUnselecting() {
     for (let i = 0; i < this.episodes.length; i++){
