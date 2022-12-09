@@ -58,59 +58,55 @@ export class World {
           }
         }
       }
+      if (didRenderAnEpisode) {
+        continue;
+      }
 
       // Step2: if no episode is rendered, 
       // check if an episode is at the bottom of the rendering list for all the mountains it belongs to. 
       // Render if true. 
-      if (!didRenderAnEpisode) {
-        // create a list of all episodes left
-        let epsIdsLeft = [];
-        let epsesLeft = [];
-        for (let i = 0; i < this.mountains.length; i++) {
-          if (renderIndexes[i] < this.mountains[i].episodes.length) {
-            // this mountain still has episodes left to render
-            let eps = this.mountains[i].episodes[renderIndexes[i]]; 
-            let epsId = eps.identity;
-            epsIdsLeft.push(epsId);
-            epsesLeft.push(eps);
-          }
-        }
-searchLoop:
-        for (let i = 0; i < epsIdsLeft.length; i++) {
-          let idToCheck = epsIdsLeft[i];
-          let epsForTheId = epsesLeft[i];
-          let count = 0;
-          for (let j = 0; j < epsIdsLeft.length; j++) {
-            if (idToCheck === epsIdsLeft[j]) {
-              count++;
-            }
-          }
-          if (epsForTheId.mountains.length <= count) {
-            // The episode appears the same number of times as it has mountains, 
-            // so all of the mountains this episode belongs to have it at the bottom of the rendering list! 
-            // Render. 
-            epsForTheId.render(svg);
-            didRenderAnEpisode = true;
-            // find the indexes for this episode in renderIndexes and advance them
-            for (let m = 0; m < this.mountains.length; m++) {
-              if (renderIndexes[m] < this.mountains[i].episodes.length) {
-                let e = this.mountains[m].episodes[renderIndexes[m]];
-                if (idToCheck === e.identity) {
-                  // just rendered this. Advance
-                  renderIndexes[m]++; 
-                }
-              }
-            }
-          } 
-          break searchLoop;
+      let epsIdsLeft = [];
+      let epsesLeft = [];
+      // create a list of all episodes left
+      for (let i = 0; i < this.mountains.length; i++) {
+        if (renderIndexes[i] < this.mountains[i].episodes.length) {
+          // this mountain still has episodes left to render
+          let eps = this.mountains[i].episodes[renderIndexes[i]]; 
+          let epsId = eps.identity;
+          epsIdsLeft.push(epsId);
+          epsesLeft.push(eps);
         }
       }
+searchLoop:
+      for (let i = 0; i < epsIdsLeft.length; i++) {
+        let idToCheck = epsIdsLeft[i];
+        let epsForTheId = epsesLeft[i];
+        let count = 0;
+        for (let j = 0; j < epsIdsLeft.length; j++) {
+          if (idToCheck === epsIdsLeft[j]) {
+            count++;
+          }
+        }
+        if (epsForTheId.mountains.length <= count) {
+          // The episode appears the same number of times as it has mountains, 
+          // so all of the mountains this episode belongs to have it at the bottom of the rendering list! 
+          // Render. 
+          epsForTheId.render(svg);
+          didRenderAnEpisode = true;
+          // find the indexes for this episode in renderIndexes and advance them
+          for (let m = 0; m < this.mountains.length; m++) {
+            if (renderIndexes[m] < this.mountains[i].episodes.length) {
+              let e = this.mountains[m].episodes[renderIndexes[m]];
+              if (idToCheck === e.identity) {
+                // just rendered this. Advance
+                renderIndexes[m]++; 
+              }
+            }
+          }
+          break searchLoop; // didn't update epsIdsLeft so this can be done only once
+        } 
+      }
     }
-
-
-    // for (let i = 0; i < this.mountains.length; i++) {
-    //   this.mountains[i].render(svg);
-    // }
   }
 
   selectEpisode(eId) {
