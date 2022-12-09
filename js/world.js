@@ -49,6 +49,7 @@ export class World {
     .attr("style", "max-width: 100%; height: auto; height: intrinsic;");
 
     while (this.totalEpisodesCountIncludingDuplicates() > 0) {
+      //console.log(this.totalEpisodesCountIncludingDuplicates());
       for (let i = 0; i < this.mountains.length; i++) {
         let eps = this.mountains[i].episodes[0]; // take the bottom episode
         if (typeof eps !== 'undefined') {
@@ -58,9 +59,9 @@ export class World {
           } else {
             let readyToRender = true;
             for (let m = 0; m < eps.mountains.length; m++) {
-              if (eps.mountains[m].episodes[0].identity !== eps.identity) {
+              if (eps.mountains[m].episodes.length !== 0 && eps.mountains[m].episodes[0].identity !== eps.identity) {
                 readyToRender = false;
-              }
+              } 
             }
             if (readyToRender) {
               eps.render(svg);

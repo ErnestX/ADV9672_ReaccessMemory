@@ -5,7 +5,6 @@ export class Mountain {
   constructor(w, bps, esCount, lbl){
     this.world = w;
     this.basePoints = bps;
-    //this.maxPoints = twoLevelCopyArr(this.basePoints).map((coord) => [coord[0] * 1.2, coord[1] * 1.2]);;
     this.label = lbl;
     this.episodes = [];
     this.shiftCache = [];

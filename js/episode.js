@@ -56,7 +56,7 @@ export class Episode {
     console.log(combinedPoints);
 
     return new Episode(eps1.world, 
-      eps1.mountains.concat(eps2.mountains), 
+      [...new Set(eps1.mountains.concat(eps2.mountains))], 
       (eps1.lineWeight + eps2.lineWeight)/2.0, 
       blendColors(eps1.lineColor, eps2.lineColor, 0.5), 
       combinedPoints, 
