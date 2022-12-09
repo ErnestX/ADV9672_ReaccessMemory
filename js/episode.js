@@ -44,9 +44,9 @@ export class Episode {
       eps2Points.push(p);
     }
 
-    // Step2: remove p1 and p2
-    eps1Points.pop();
-    eps2Points.shift();
+    // Step2: remove p1 and p2. this makes the connection wider
+    //eps1Points.pop();
+    //eps2Points.shift();
 
     // Step3: concat
     let combinedPoints = eps1Points.concat(eps2Points);
@@ -57,8 +57,7 @@ export class Episode {
     return new Episode(eps1.world, 
       eps1.mountains.concat(eps2.mountains), 
       (eps1.lineWeight + eps2.lineWeight)/2.0, 
-      //blendColors(eps1.lineColor, eps2.lineColor), 
-      rgb(255, 0, 0),
+      blendColors(eps1.lineColor, eps2.lineColor, 0.5), 
       combinedPoints, 
       combinedPoints, 
       "episode".concat(uuidv4())); // fix: max points
@@ -71,7 +70,7 @@ export class Episode {
     .attr("id", thisObj.identity)
     .attr('d', thisObj.contourCurve(thisObj.points))
     .attr("stroke-linejoin", "round")
-    .attr("fill", "transparent")
+    .attr("fill", "black")
     .attr("stroke", thisObj.lineColor)
     .attr("stroke-width", thisObj.lineWeight)
     .on("click", function () {
@@ -85,7 +84,7 @@ export class Episode {
     .on("mouseout", function() {
       d3
       .select('path#'.concat(thisObj.identity))
-      .attr("fill", "transparent");
+      .attr("fill", "black");
     })
     .on("mousedown", function() {
       thisObj.world.combineEpisodeAtMtns(thisObj.identity, thisObj.mountainLabels());
