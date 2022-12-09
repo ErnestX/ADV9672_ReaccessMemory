@@ -1,4 +1,4 @@
-import { rgb, twoLevelCopyArr } from "./utilities.js";
+import { rgb, twoLevelCopyArr, uuidv4 } from "./utilities.js";
 
 export class Episode {
   constructor(w, m, lw, lc, pts, maxPts, id) {
@@ -15,15 +15,15 @@ export class Episode {
   }
 
   static combineEpisodes(eps1, eps2) {
-    // let eps1Points = twoLevelCopyArr(eps1.points);
-    // let eps2Points = twoLevelCopyArr(eps2.points);
+    let eps1Points = twoLevelCopyArr(eps1.points);
+    let eps2Points = twoLevelCopyArr(eps2.points);
 
-    // let eps1PointsLength = eps1Points.length;
-    // let insertPoint = Math.floor(eps1PointsLength / 2);
+    let eps1PointsLength = eps1Points.length;
+    let insertPoint = Math.floor(eps1PointsLength / 2);
     
-    // let combinedPoints = eps1Points.splice(insertPoint, 0, eps2Points);
+    let combinedPoints = eps1Points.splice(insertPoint, 0, eps2Points);
 
-    // return new Episode(eps1.mountains.concat(eps2.mountains), eps1.lineWeight, eps1.lineColor, combinedPoints, combinedPoints, eps1.mountains[0].label.concat("episode".concat(uuidv4()))); // fix: max points
+    return new Episode(eps1.mountains.concat(eps2.mountains), eps1.lineWeight, eps1.lineColor, combinedPoints, combinedPoints, "episode".concat(uuidv4())); // fix: weight, color, max points
   }
 
   render(svg) {
