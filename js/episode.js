@@ -50,10 +50,10 @@ export class Episode {
       .attr("fill", "black");
     })
     .on("mousedown", function() {
-      thisObj.world.combineEpisode(thisObj.identity);
+      thisObj.world.combineEpisodeAtMtns(thisObj.identity, thisObj.mountainLabels());
     })
     .on("mouseup", function() {
-      thisObj.mountains[0].combineWithEpisode(thisObj.identity);
+      thisObj.world.combineWithEpisodeAtMtns(thisObj.identity, thisObj.mountainLabels());
     });
   }
 
@@ -95,5 +95,13 @@ export class Episode {
     .transition()
     .duration(1500)
     .style('opacity', 1.0);
+  }
+
+  mountainLabels() {
+    let output = [];
+    for (let i = 0; i < this.mountains.length; i++) {
+      output.push(this.mountains[i].label);
+    }
+    return output;
   }
 }

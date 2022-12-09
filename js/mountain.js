@@ -70,18 +70,6 @@ export class Mountain {
       }
     }
   }
-  
-  // selectEpisode(eId) {
-  //   this.world.selectEpisode(eId);
-  // }
-
-  combineEpisode(eId){
-    this.world.combineEpisodeAtMtn(eId, this.label);
-  }
-
-  combineWithEpisode(eId){
-    this.world.combineWithEpisodeAtMtn(eId, this.label);
-  }
 
   getEpisode(eId) {
     for (let i = 0; i < this.episodes.length; i++){

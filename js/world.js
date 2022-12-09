@@ -57,20 +57,24 @@ export class World {
   }
 
   combineEpisodeAtMtns(eId, mLbs) {
+    console.log("combine at mountain: ");
+    console.log(mLbs);
     this.episodeToCombine = eId;
     this.mtnsOfEpisodeToCombine = mLbs;
   }
 
   combineWithEpisodeAtMtns(eId, mLbs) {
+    console.log("combine with at mountain: ");
+    console.log(mLbs);
     // must be on different mountains! 
     for (let i = 0; i < this.mtnsOfEpisodeToCombine.length; i++) {
       for (let j = 0; j < mLbs.length; j++) {
-        if (this.mtnsOfEpisodeToCombine[i] === mlbs[j]) {
+        if (this.mtnsOfEpisodeToCombine[i] === mLbs[j]) {
           return;
         }
       }
     }
-    Mountain.combineEpisodes(this.getMountains(this.mtnsOfEpisodeToCombine), this.getMountains(mLb), this.episodeToCombine, eId);
+    Mountain.combineEpisodes(this.getMountains(this.mtnsOfEpisodeToCombine), this.getMountains(mLbs), this.episodeToCombine, eId);
   }
 
   getMountains(mLbs) {
