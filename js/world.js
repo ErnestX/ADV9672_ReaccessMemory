@@ -31,6 +31,14 @@ export class World {
     }
   }
 
+  totalEpisodesCountIncludingDuplicates(){
+    let totalCount = 0;
+    for (let i = 0; i < this.mountains.length; i++) {
+      totalCount += this.mountains[i].episodes.length;
+    }
+    return totalCount;
+  }
+
   render() {
     d3.select("svg").remove();
     const svg = d3.select("#SvgContour")
@@ -40,22 +48,19 @@ export class World {
     .attr("viewBox", [0, 0, this.width, this.height])
     .attr("style", "max-width: 100%; height: auto; height: intrinsic;");
 
-    let renderIndexes = Array(this.mountains.length).fill(0);
     let didRenderAnEpisode = true;
-    while (didRenderAnEpisode) {
+    while (this.totalEpisodesCountIncludingDuplicates() > 0) {
+      console.log(this.totalEpisodesCountIncludingDuplicates());
       didRenderAnEpisode = false;
 
       // Step1: render all episodes that belong to only one mountain
       // index advances only when the mountain has an episode rendered
       for (let i = 0; i < this.mountains.length; i++) {
-        if (renderIndexes[i] < this.mountains[i].episodes.length) {
-          // this mountain still has episodes left to render
-          let eps = this.mountains[i].episodes[renderIndexes[i]];
-          if (eps.mountains.length < 2) {
-            eps.render(svg);
-            renderIndexes[i]++;
-            didRenderAnEpisode = true;
-          }
+        let eps = this.mountains[i].episodes[0]; // take the bottom episode
+        if (typeof eps !== 'undefined' && eps.mountains.length < 2) {
+          eps.render(svg);
+          this.mountains[i].recoverableShiftEpisodes();
+          didRenderAnEpisode = true;
         }
       }
       if (didRenderAnEpisode) {
@@ -63,15 +68,14 @@ export class World {
       }
 
       // Step2: if no episode is rendered, 
-      // check if an episode is at the bottom of the rendering list for all the mountains it belongs to. 
+      // check if an episode is at the bottom of the rendering lists for all the mountains it belongs to. 
       // Render if true. 
       let epsIdsLeft = [];
       let epsesLeft = [];
       // create a list of all episodes left
       for (let i = 0; i < this.mountains.length; i++) {
-        if (renderIndexes[i] < this.mountains[i].episodes.length) {
-          // this mountain still has episodes left to render
-          let eps = this.mountains[i].episodes[renderIndexes[i]]; 
+        let eps = this.mountains[i].episodes[0]; // care only about the bottom episode
+        if (typeof eps !== 'undefined') {
           let epsId = eps.identity;
           epsIdsLeft.push(epsId);
           epsesLeft.push(eps);
@@ -80,7 +84,7 @@ export class World {
 searchLoop:
       for (let i = 0; i < epsIdsLeft.length; i++) {
         let idToCheck = epsIdsLeft[i];
-        let epsForTheId = epsesLeft[i];
+        let epsForTheId = epsesLeft[i]; // assumption: epsIdsLeft and epsesLeft corresponds to each other at the same index
         let count = 0;
         for (let j = 0; j < epsIdsLeft.length; j++) {
           if (idToCheck === epsIdsLeft[j]) {
@@ -95,17 +99,19 @@ searchLoop:
           didRenderAnEpisode = true;
           // find the indexes for this episode in renderIndexes and advance them
           for (let m = 0; m < this.mountains.length; m++) {
-            if (renderIndexes[m] < this.mountains[i].episodes.length) {
-              let e = this.mountains[m].episodes[renderIndexes[m]];
-              if (idToCheck === e.identity) {
-                // just rendered this. Advance
-                renderIndexes[m]++; 
-              }
+            let e = this.mountains[m].episodes[0];
+            if (typeof e !== 'undefined' && idToCheck === e.identity) {
+              // just rendered this. remove the bottom episode
+              this.mountains[m].recoverableShiftEpisodes();
             }
           }
-          break searchLoop; // didn't update epsIdsLeft so this can be done only once
-        } 
-      }
+        }
+        break searchLoop; // didn't update epsIdsLeft, epsForTheId, etc., so this can be done only once
+      } 
+    } 
+    for (let i = 0; i < this.mountains.length; i++) {
+      this.mountains[i].recoverEpisodes(); // recover from pops and shifts
+      console.log(this.mountains[i].episodes);
     }
   }
 

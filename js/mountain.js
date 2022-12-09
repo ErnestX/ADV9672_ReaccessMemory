@@ -61,26 +61,31 @@ export class Mountain {
 
   recoverablePopEpisodes() {
     let eps = this.episodes.pop();
-    this.popCache.unshift(eps);
+    if (typeof eps !== 'undefined') {
+      this.popCache.unshift(eps);
+    }
     return eps;
   }
 
   recoverableShiftEpisodes() {
     let eps = this.episodes.shift();
-    this.shiftCache.push(eps);
+    if (typeof eps !== 'undefined') {
+      this.shiftCache.push(eps);
+    }
     return eps;
   }
 
   recoverEpisodes() {
+    let eps;
     do {
-      let eps = this.shiftCache.pop();
+      eps = this.shiftCache.pop();
       if (typeof eps !== 'undefined') {
         this.episodes.unshift(eps);
       }
     } while (typeof eps !== 'undefined')
 
     do {
-      let eps = this.popCache.shift();
+      eps = this.popCache.shift();
       if (typeof eps !== 'undefined') {
         this.episodes.push(eps);
       }
