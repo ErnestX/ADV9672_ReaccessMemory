@@ -5,7 +5,7 @@ export class Mountain {
   constructor(w, bps, esCount, lbl){
     this.world = w;
     this.basePoints = bps;
-    this.maxPoints = twoLevelCopyArr(this.basePoints).map((coord) => [coord[0] * 1.2, coord[1] * 1.2]);;
+    //this.maxPoints = twoLevelCopyArr(this.basePoints).map((coord) => [coord[0] * 1.2, coord[1] * 1.2]);;
     this.label = lbl;
     this.episodes = [];
     this.shiftCache = [];
@@ -32,7 +32,14 @@ export class Mountain {
         currentPoints[i][1] += (basePointsAverage[1] - currentPoints[i][1]) / esCount;
       }
 
-      this.episodes.push(new Episode(this.world, [this], lineWidth, lineColor, twoLevelCopyArr(currentPoints),this.maxPoints ,eId));
+      this.episodes.push(new Episode(this.world, 
+        [this], 
+        lineWidth, 
+        lineColor, 
+        twoLevelCopyArr(currentPoints), 
+        2, 
+        [10,20], 
+        eId)); 
     }
   } 
 

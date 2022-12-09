@@ -60,7 +60,8 @@ export class Episode {
       (eps1.lineWeight + eps2.lineWeight)/2.0, 
       blendColors(eps1.lineColor, eps2.lineColor, 0.5), 
       combinedPoints, 
-      combinedPoints, 
+      2, 
+      [10,20],
       "episode".concat(uuidv4())); // fix: max points
   }
 
@@ -97,34 +98,32 @@ export class Episode {
 
   animateSelected() {
     this.isSelected = true;
-    let selectionTransform = d3.transform()
-    .scale(this.selectionScale)
-    .translate(this.selectionTranslation[0], this.selectionTranslation[1]);
+    let thisObj = this;
     
     d3
-    .select('path#'.concat(this.identity))
+    .select('path#'.concat(thisObj.identity))
     .transition()
     .duration(2000)
-    .attr("stroke-width", 1 / this.selectionScale)
+    .attr("stroke-width", 1 / thisObj.selectionScale)
     .attr("stroke", rgb(255, 255, 255))
-    //.attr('d', this.contourCurve(this.maxPoints));
-    .attr("transform", selectionTransform);
+    .attr('transform', function(d, i) {
+      return "translate(" + thisObj.selectionTranslation[0] + "," + thisObj.selectionTranslation[1] + ") scale(" + thisObj.selectionScale + ")";
+    });
   }
 
   animateUnselected() {
-    this.isSelected = false;
-    let identityTransform = d3.transform()
-    .scale(1.0)
-    .translate(0.0, 0.0);
-
+    //this.isSelected = false;
+    let thisObj = this;
     d3
-      .select('path#'.concat(this.identity))
+      .select('path#'.concat(thisObj.identity))
       .transition()
       .duration(2000)
-      .attr("stroke-width", this.lineWeight)
-      .attr("stroke", this.lineColor)
-      //.attr('d', this.contourCurve(this.points));
-      .attr("transform", identityTransform);
+      .attr("stroke-width", thisObj.lineWeight)
+      .attr("stroke", thisObj.lineColor)
+      .attr('transform', function(d, i) {
+        return "translate(0,0) scale(1)";
+      })
+      .on("end", thisObj.isSelected = false);
   }
 
   animateDismissed() {
