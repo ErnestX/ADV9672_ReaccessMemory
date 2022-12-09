@@ -1,4 +1,4 @@
-import { rgb, twoLevelCopyArr, uuidv4, blendColors } from "./utilities.js";
+import { rgb, twoLevelCopyArr, uuidv4, blendColors, arePointsEqual } from "./utilities.js";
 
 export class Episode {
   constructor(w, m, lw, lc, pts, maxPts, id) {
@@ -18,10 +18,37 @@ export class Episode {
     let eps1Points = twoLevelCopyArr(eps1.points);
     let eps2Points = twoLevelCopyArr(eps2.points);
 
-    let eps1PointsLength = eps1Points.length;
-    let insertPoint = Math.floor(eps1PointsLength / 2);
-    
-    eps1Points.splice(insertPoint, 0, ...eps2Points);
+    let minDistance = Infinity;
+    let p1ForMinDist = [];
+    let p2ForMinDist = [];
+    for (let i = 0; i < eps1Points.length; i++) {
+      for (let j = 0; j < eps2Points.length; j++) {
+        let p1 = eps1Points[i];
+        let p2 = eps2Points[j];
+        let distance = Math.sqrt(Math.pow(p1[0] - p2[0], 2) + Math.pow(p1[1] - p2[1], 2));
+        if (distance < minDistance) {
+          minDistance = distance;
+          p1ForMinDist = p1;
+          p2ForMinDist = p2;
+        }
+      }
+    }
+
+    // Step1:  move p1 to the end of points1, and p2 to the beginning of points2
+    while (!arePointsEqual(eps1Points[eps1Points.length-1], p1ForMinDist)) {
+      let p = eps1Points.shift();
+      eps1Points.push(p);
+    }
+    while (!arePointsEqual(eps2Points[0], p2ForMinDist)) {
+      let p = eps2Points.shift();
+      eps2Points.push(p);
+    }
+
+    // Step2: remove p1 and p2
+    eps1Points.pop();
+    eps2Points.shift();
+
+    // Step3: concat
     let combinedPoints = eps1Points.concat(eps2Points);
     
     console.log("combined points: ");

@@ -21,6 +21,10 @@ export function twoLevelCopyArr(array) {
   return newArray;
 }
 
+export function arePointsEqual(pt1, pt2) {
+  return pt1[0] === pt2[0] && pt1[1] == pt2[1];
+}
+
 /// reference: https://stackoverflow.com/questions/105034/how-do-i-create-a-guid-uuid
 export function uuidv4() {
   return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
