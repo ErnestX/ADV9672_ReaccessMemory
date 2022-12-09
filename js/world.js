@@ -54,7 +54,7 @@ export class World {
         if (typeof eps !== 'undefined') {
           if (eps.mountains.length < 2) {
             eps.render(svg);
-            this.mountains[i].recoverableShiftEpisodes();
+            this.mountains[i].recoverableShiftAnEpisode();
           } else {
             let readyToRender = true;
             for (let m = 0; m < eps.mountains.length; m++) {
@@ -65,7 +65,7 @@ export class World {
             if (readyToRender) {
               eps.render(svg);
               for (let m = 0; m < eps.mountains.length; m++) {
-                eps.mountains[m].recoverableShiftEpisodes();
+                eps.mountains[m].recoverableShiftAnEpisode();
               }
             }
           }
@@ -83,9 +83,13 @@ export class World {
       return;
     }
     AppState.state = 1;
+
     for (let i = 0; i < this.mountains.length; i++) {
-      this.mountains[i].animateSelecting(eId);
+      this.mountains[i].recoverablePopUntilEpisode(eId);
+      // this.mountains[i].animateSelecting(eId);
     }
+
+    this.render();
   }
 
   unselect() {
@@ -93,9 +97,13 @@ export class World {
       return;
     }
     AppState.state = 0;
+
     for (let i = 0; i < this.mountains.length; i++) {
-      this.mountains[i].animateUnselecting();
+      this.mountains[i].recoverEpisodes();
+    //   this.mountains[i].animateUnselecting();
     }
+
+    this.render();
   }
 
   combineEpisodeAtMtns(eId, mLbs) {

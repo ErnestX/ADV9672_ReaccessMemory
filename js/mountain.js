@@ -66,7 +66,7 @@ export class Mountain {
     }
   }
 
-  recoverablePopEpisodes() {
+  recoverablePopAnEpisode() {
     let eps = this.episodes.pop();
     if (typeof eps !== 'undefined') {
       this.popCache.unshift(eps);
@@ -74,12 +74,22 @@ export class Mountain {
     return eps;
   }
 
-  recoverableShiftEpisodes() {
+  recoverableShiftAnEpisode() {
     let eps = this.episodes.shift();
     if (typeof eps !== 'undefined') {
       this.shiftCache.push(eps);
     }
     return eps;
+  }
+
+  recoverablePopUntilEpisode(eId) {
+    while (this.episodes.length > 0) {
+      if (this.episodes[this.episodes.length-1].identity === eId) {
+        return;
+      } else {
+        this.recoverablePopAnEpisode();
+      }
+    }
   }
 
   recoverEpisodes() {
