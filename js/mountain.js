@@ -8,6 +8,8 @@ export class Mountain {
     this.maxPoints = twoLevelCopyArr(this.basePoints).map((coord) => [coord[0] * 1.2, coord[1] * 1.2]);;
     this.label = lbl;
     this.episodes = [];
+    this.shiftCache = [];
+    this.popCache = [];
 
     let basePointsAverage = [0, 0];
     for (let i = 0; i < this.basePoints.length; i++) {
@@ -57,11 +59,33 @@ export class Mountain {
     }
   }
 
-  // render(svg) {
-  //   for (let i = 0; i < this.episodes.length; i++) {
-  //     this.episodes[i].render(svg);
-  //   }
-  // }
+  recoverablePopEpisodes() {
+    let eps = this.episodes.pop();
+    this.popCache.unshift(eps);
+    return eps;
+  }
+
+  recoverableShiftEpisodes() {
+    let eps = this.episodes.shift();
+    this.shiftCache.push(eps);
+    return eps;
+  }
+
+  recoverEpisodes() {
+    do {
+      let eps = this.shiftCache.pop();
+      if (typeof eps !== 'undefined') {
+        this.episodes.unshift(eps);
+      }
+    } while (typeof eps !== 'undefined')
+
+    do {
+      let eps = this.popCache.shift();
+      if (typeof eps !== 'undefined') {
+        this.episodes.push(eps);
+      }
+    } while (typeof eps !== 'undefined')
+  }
 
   animateUnselecting() {
     for (let i = 0; i < this.episodes.length; i++){
