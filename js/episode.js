@@ -1,13 +1,14 @@
 import { rgb, twoLevelCopyArr, uuidv4, blendColors, arePointsEqual } from "./utilities.js";
 
 export class Episode {
-  constructor(w, m, lw, lc, pts, maxPts, id) {
+  constructor(w, m, lw, lc, pts, selScale, selTrans, id) {
     this.world = w;
     this.mountains = m;
     this.lineWeight = lw;
     this.lineColor = lc;
     this.points = pts;
-    this.maxPoints = maxPts;
+    this.selectionScale = selScale; 
+    this.selectionTranslation = selTrans;
     this.identity = id;
     this.isSelected = false;
 
@@ -96,28 +97,37 @@ export class Episode {
 
   animateSelected() {
     this.isSelected = true;
+    let selectionTransform = d3.transform()
+    .scale(this.selectionScale)
+    .translate(this.selectionTranslation[0], this.selectionTranslation[1]);
+    
     d3
     .select('path#'.concat(this.identity))
     .transition()
     .duration(2000)
-    .attr("stroke-width", 1)
+    .attr("stroke-width", 1 / this.selectionScale)
     .attr("stroke", rgb(255, 255, 255))
-    .attr('d', this.contourCurve(this.maxPoints));
+    //.attr('d', this.contourCurve(this.maxPoints));
+    .attr("transform", selectionTransform);
   }
 
   animateUnselected() {
     this.isSelected = false;
+    let identityTransform = d3.transform()
+    .scale(1.0)
+    .translate(0.0, 0.0);
+
     d3
       .select('path#'.concat(this.identity))
       .transition()
       .duration(2000)
       .attr("stroke-width", this.lineWeight)
       .attr("stroke", this.lineColor)
-      .attr('d', this.contourCurve(this.points));
+      //.attr('d', this.contourCurve(this.points));
+      .attr("transform", identityTransform);
   }
 
   animateDismissed() {
-    //console.log("Dismissed: ".concat(this.identity));
     d3
     .select('path#'.concat(this.identity))
     .transition()
@@ -126,7 +136,6 @@ export class Episode {
   }
 
   animateUndismissed() {
-    //console.log("Undismissed: ".concat(this.identity));
     d3
     .select('path#'.concat(this.identity))
     .transition()
