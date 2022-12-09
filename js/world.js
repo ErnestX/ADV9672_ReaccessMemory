@@ -5,6 +5,9 @@ import {Delaunay} from "https://cdn.skypack.dev/d3-delaunay@6";
 
 export class World {
   constructor(w, h, numOfMountains) {
+    this.episodeToCombine = "";
+    this.mtnsOfEpisodeToCombine = "";
+
     this.width = w;
     this.height = h;
     this.mountains = [];
@@ -53,12 +56,37 @@ export class World {
     }
   }
 
-  combineEpisodeAtMtn(eId, mLb) {
-    console.log("Combining ".concat(eId));
-    
+  combineEpisodeAtMtns(eId, mLbs) {
+    this.episodeToCombine = eId;
+    this.mtnsOfEpisodeToCombine = mLbs;
   }
 
-  combineWithEpisodeAtMtn(eId, mLb) {
-    console.log("--> with ".concat(eId));
+  combineWithEpisodeAtMtns(eId, mLbs) {
+    // must be on different mountains! 
+    for (let i = 0; i < this.mtnsOfEpisodeToCombine.length; i++) {
+      for (let j = 0; j < mLbs.length; j++) {
+        if (this.mtnsOfEpisodeToCombine[i] === mlbs[j]) {
+          return;
+        }
+      }
+    }
+    Mountain.combineEpisodes(this.getMountains(this.mtnsOfEpisodeToCombine), this.getMountains(mLb), this.episodeToCombine, eId);
+  }
+
+  getMountains(mLbs) {
+    let output = []
+    for (let i = 0; i < mLbs.length; i++) {
+      output.push(this.getMountain(mLbs[i]));
+    }
+    return output;
+  }
+
+  getMountain(mLb) {
+    for (let i = 0; i < this.mountains.length; i++){
+      if (this.mountains[i].label === mLb) {
+        return this.mountains[i];
+      }
+    }
+    return null;
   }
 }
