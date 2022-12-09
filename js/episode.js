@@ -21,14 +21,20 @@ export class Episode {
     let eps1PointsLength = eps1Points.length;
     let insertPoint = Math.floor(eps1PointsLength / 2);
     
-    let combinedPoints = eps1Points.splice(insertPoint, 0, eps2Points);
+    eps1Points.splice(insertPoint, 0, ...eps2Points);
+    let combinedPoints = eps1Points.concat(eps2Points);
+    
+    console.log("combined points: ");
+    console.log(combinedPoints);
 
-    return new Episode(eps1.mountains.concat(eps2.mountains), 
-    (eps1.lineWeight + eps2.lineWeight)/2.0, 
-    blendColors(eps1.lineColor, eps2.lineColor), 
-    combinedPoints, 
-    combinedPoints * 2, 
-    "episode".concat(uuidv4())); // fix: max points
+    return new Episode(eps1.world, 
+      eps1.mountains.concat(eps2.mountains), 
+      (eps1.lineWeight + eps2.lineWeight)/2.0, 
+      //blendColors(eps1.lineColor, eps2.lineColor), 
+      rgb(255, 0, 0),
+      combinedPoints, 
+      combinedPoints, 
+      "episode".concat(uuidv4())); // fix: max points
   }
 
   render(svg) {
@@ -36,11 +42,11 @@ export class Episode {
     svg
     .append('path')
     .attr("id", thisObj.identity)
-    .attr('d', this.contourCurve(this.points))
+    .attr('d', thisObj.contourCurve(thisObj.points))
     .attr("stroke-linejoin", "round")
-    .attr("fill", "black")
-    .attr("stroke", this.lineColor)
-    .attr("stroke-width", this.lineWeight)
+    .attr("fill", "transparent")
+    .attr("stroke", thisObj.lineColor)
+    .attr("stroke-width", thisObj.lineWeight)
     .on("click", function () {
       thisObj.world.selectEpisode(thisObj.identity);
     })
@@ -52,7 +58,7 @@ export class Episode {
     .on("mouseout", function() {
       d3
       .select('path#'.concat(thisObj.identity))
-      .attr("fill", "black");
+      .attr("fill", "transparent");
     })
     .on("mousedown", function() {
       thisObj.world.combineEpisodeAtMtns(thisObj.identity, thisObj.mountainLabels());

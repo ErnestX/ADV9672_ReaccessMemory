@@ -19,6 +19,7 @@ export class World {
       let y = mapRange(Math.random(), 0.0, 1.0, padding, this.height-padding);
       mountainBasePoints.push([x, y]);
     }
+    console.log("Mountain base points: ");
     console.log(mountainBasePoints);
     let voronoiDiagram = Delaunay.from(mountainBasePoints)
     .voronoi([0, 0, this.width, this.height]);

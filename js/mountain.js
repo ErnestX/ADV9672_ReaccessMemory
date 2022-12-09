@@ -46,7 +46,7 @@ export class Mountain {
       for (let i = 0; i < mtns2.length; i++) {
         mtns2[i].replaceEpisodeAtIdWithEpisode(epsId2, combinedEps);
       }
-      }
+    }
   }
 
   replaceEpisodeAtIdWithEpisode(eIdToReplace, newEpisode) {
