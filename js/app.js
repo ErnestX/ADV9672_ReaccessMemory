@@ -15,5 +15,13 @@ document.addEventListener("keydown", function(event) {
   const key = event.key; // Or const {key} = event; in ES6+
   if (key === "Escape") {
     world.unselect(); 
+    AppState.textBuffer = "";
+  } else if (key === "Enter") {
+    AppState.selectedEpisode.text = AppState.textBuffer;
+    AppState.selectedEpisode.refreshText();
+  } else {
+    AppState.textBuffer = AppState.textBuffer.concat(key);
+    console.log("ohter key pressed");
+    console.log(AppState.textBuffer);
   }
 });

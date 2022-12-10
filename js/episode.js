@@ -13,7 +13,7 @@ export class Episode {
     this.identity = id;
     
     // this.isSelected = false;
-    this.text = "testing";
+    this.text = "test1";
 
     this.contourCurve = d3.line().curve(d3.curveBasisClosed);
   }
@@ -186,7 +186,7 @@ export class Episode {
   }
 
   refreshText() {
-    AppState.textLabel.text(thisObj.text);
+    AppState.textLabel.text(this.text);
   }
 
   /// the parameters are for the initial selected state

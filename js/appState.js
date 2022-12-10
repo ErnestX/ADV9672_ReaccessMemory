@@ -9,5 +9,6 @@ export class AppState {
     /// Not null when and only when state = 1
     static selectedEpisode = null; 
 
+    static textBuffer = "";
     static textLabel;
 }
