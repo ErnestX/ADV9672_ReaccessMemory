@@ -16,20 +16,19 @@ export class Mountain {
 
     // init episodes
     for (let e = 0; e < esCount; e++) {
-      let lc = 175 + 80 / esCount * e;
-      let lineColor = rgb(lc, lc, lc);
-      let lineWidth = 0.9 + 0.9 / esCount * e;
       let eId = "episode".concat(uuidv4());
       for (let i = 0; i < currentPoints.length; i++) {
         currentPoints[i][0] += (basePointsAverage[0] - currentPoints[i][0]) / esCount;
         currentPoints[i][1] += (basePointsAverage[1] - currentPoints[i][1]) / esCount;
       }
 
+      let lineProperties = Episode.calcLineWeightAndColor(esCount, e);
       let transformData = Episode.scaleAndTranslationGivenPoints(twoLevelCopyArr(currentPoints));
+
       this.episodes.push(new Episode(this.world, 
         [this], 
-        lineWidth, 
-        lineColor, 
+        lineProperties[0], 
+        lineProperties[1], 
         twoLevelCopyArr(currentPoints), 
         transformData[0], 
         transformData[1], 
@@ -57,18 +56,16 @@ export class Mountain {
 
     let currentPoints = twoLevelCopyArr(this.basePoints);
     for (let e = 0; e < this.episodes.length; e++) {
-      let lc = 175 + 80 / this.episodes.length * e;
-      let lineColor = rgb(lc, lc, lc);
-      let lineWidth = 0.9 + 0.9 / this.episodes.length * e;
       for (let i = 0; i < currentPoints.length; i++) {
         currentPoints[i][0] += (basePointsAverage[0] - currentPoints[i][0]) / this.episodes.length;
         currentPoints[i][1] += (basePointsAverage[1] - currentPoints[i][1]) / this.episodes.length;
       }
 
+      let lineProperties = Episode.calcLineWeightAndColor(this.episodes.length, e);
       let transformData = Episode.scaleAndTranslationGivenPoints(twoLevelCopyArr(currentPoints));
 
-      this.episodes[e].lineWeight = lineWidth;
-      this.episodes[e].lineColor = lineColor;
+      this.episodes[e].lineWeight = lineProperties[0];
+      this.episodes[e].lineColor = lineProperties[1];
       this.episodes[e].points = twoLevelCopyArr(currentPoints);
       this.episodes[e].selectionScale = transformData[0];
       this.episodes[e].selectionTranslation = transformData[1];

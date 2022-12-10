@@ -107,6 +107,14 @@ export class Episode {
       "episode".concat(uuidv4())); 
   }
 
+  static calcLineWeightAndColor(totalCount, index) {
+    let lc = Math.floor(175 + (80 / totalCount) * index);
+    let lineColor = rgb(lc, lc, lc);
+    let lineWidth = 0.9 + (0.9 / totalCount) * index;
+
+    return [lineWidth, lineColor];
+  }
+
   render(svg) {
     let thisObj = this;
     svg
