@@ -114,26 +114,33 @@ export class Mountain {
     }
   }
 
-  animateUnselecting() {
-    for (let i = 0; i < this.episodes.length; i++){
-      if (this.episodes[i].isSelected) {
-        this.episodes[i].animateUnselected();
-      } else {
-        this.episodes[i].animateUndismissed();
-      }
+  /// the parameters are for the initial selected state
+  animateUnselectionWithTransformation(scale, translation) {
+    for (let i = 0; i < this.episodes.length; i++) { 
+      this.episodes[i].animateUnselectionContext(scale, translation);
     }
   }
 
-  animateSelecting(episodeId) {
-    //console.log("animating selected id: ".concat(episodeId));
-    for (let i = 0; i < this.episodes.length; i++){
-      if (this.episodes[i].identity !== episodeId) {
-        this.episodes[i].animateDismissed();
-      } else {
-        this.episodes[i].animateSelected();
-      }
-    }
-  }
+  // animateUnselecting() {
+  //   for (let i = 0; i < this.episodes.length; i++){
+  //     if (this.episodes[i].isSelected) {
+  //       this.episodes[i].animateUnselected();
+  //     } else {
+  //       this.episodes[i].animateUndismissed();
+  //     }
+  //   }
+  // }
+
+  // animateSelecting(episodeId) {
+  //   //console.log("animating selected id: ".concat(episodeId));
+  //   for (let i = 0; i < this.episodes.length; i++){
+  //     if (this.episodes[i].identity !== episodeId) {
+  //       this.episodes[i].animateDismissed();
+  //     } else {
+  //       this.episodes[i].animateSelected();
+  //     }
+  //   }
+  // }
 
   getEpisode(eId) {
     for (let i = 0; i < this.episodes.length; i++){

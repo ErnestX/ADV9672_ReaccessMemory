@@ -85,6 +85,7 @@ export class World {
       return;
     }
     AppState.state = 1;
+    AppState.selectedEpisode = eps;
 
     for (let i = 0; i < this.mountains.length; i++) {
       this.mountains[i].recoverablePopUntilEpisode(eId);
@@ -108,10 +109,16 @@ export class World {
 
     for (let i = 0; i < this.mountains.length; i++) {
       this.mountains[i].recoverEpisodes();
-    //   this.mountains[i].animateUnselecting();
     }
 
     this.render();
+
+    for (let i = 0; i < this.mountains.length; i++) { 
+      this.mountains[i].animateUnselectionWithTransformation(AppState.selectedEpisode.selectionScale, AppState.selectedEpisode.selectionTranslation);
+    }
+
+    AppState.selectedEpisode.animateUnselection(); 
+    AppState.selectedEpisode = null;
   }
 
   combineEpisodeAtMtns(eId, mLbs) {
