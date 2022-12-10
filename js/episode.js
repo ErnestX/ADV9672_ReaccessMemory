@@ -20,39 +20,39 @@ export class Episode {
   static scaleAndTranslationGivenPoints(pts) {
     let xMaxDist = 0;
     let yMaxDist = 0;
-    let xSum = 0;
-    let ySum = 0;
 
     for (let i = 0; i < pts.length; i++) {
-      for (let j = i; j < pts.length; j++) {
+      for (let j = i+1; j < pts.length; j++) {
         let xDist = Math.abs(pts[i][0] - pts[j][0]);
         let yDist = Math.abs(pts[i][1] - pts[j][1]);
         xMaxDist = Math.max(xMaxDist, xDist);
         yMaxDist = Math.max(yMaxDist, yDist);
-
-        xSum += pts[i][0];
-        ySum += pts[i][1];
       }
     }
 
-    let padding = 50;
     let scale;
-    if (xMaxDist / yMaxDist > AppState.width / AppState.height) {
+    if ((xMaxDist / yMaxDist) > (AppState.width / AppState.height)) {
       // use X axis
-      scale = (AppState.width - padding*2) / xMaxDist;
+      scale = (AppState.width) / xMaxDist;
     } else {
       // use Y axis
-      scale = (AppState.height - padding*2) / yMaxDist;
+      scale = (AppState.height) / yMaxDist;
+    }
+
+    let xSum = 0;
+    let ySum = 0;
+    for (let i = 0; i < pts.length; i++) {
+      xSum += pts[i][0];
+      ySum += pts[i][1];
     }
 
     let xCenter = xSum / pts.length;
     let yCenter = ySum / pts.length;
 
-    let xDestination = AppState.width / 2;
-    let yDestination = AppState.height / 2;
+    let xScreenCenter = AppState.width / 2;
+    let yScreenCenter = AppState.height / 2; 
 
-    let translation = [xDestination - xCenter, yDestination - yCenter];
-
+    let translation = [xScreenCenter - xCenter*scale, yScreenCenter - yCenter*scale];
     return [scale, translation];
   }
 
@@ -96,7 +96,7 @@ export class Episode {
     console.log("combined points: ");
     console.log(combinedPoints);
 
-    let transformData = Episode.scaleAndTranslationGivenPoints(combinedPoints);
+    let transformData = Episode.scaleAndTranslationGivenPoints(twoLevelCopyArr(combinedPoints));
     return new Episode(eps1.world, 
       [...new Set(eps1.mountains.concat(eps2.mountains))], 
       (eps1.lineWeight + eps2.lineWeight)/2.0, 
@@ -202,22 +202,6 @@ export class Episode {
       return "translate(0,0) scale(1)";
     });
   }
-
-  // animateDismissed() {
-  //   d3
-  //   .select('path#'.concat(this.identity))
-  //   .transition()
-  //   .duration(1500)
-  //   .style('opacity', 0.0);
-  // }
-
-  // animateUndismissed() {
-  //   d3
-  //   .select('path#'.concat(this.identity))
-  //   .transition()
-  //   .duration(1500)
-  //   .style('opacity', 1.0);
-  // }
 
   mountainLabels() {
     let output = [];
