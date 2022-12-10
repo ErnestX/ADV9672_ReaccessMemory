@@ -77,6 +77,13 @@ export class World {
       this.mountains[i].recoverEpisodes(); // recover from pops and shifts
       console.log(this.mountains[i].episodes);
     }
+
+    AppState.textLabel =  svg.append("text")
+    .attr("x", AppState.width/2)
+    .attr("y", AppState.height/2)
+    .attr('text-anchor', 'middle')
+    .attr("class", "myLabel")//easy to style with CSS
+    .text("I'm a label");
   }
 
   selectEpisode(eps) {

@@ -11,7 +11,9 @@ export class Episode {
     this.selectionScale = selScale; 
     this.selectionTranslation = selTrans;
     this.identity = id;
-    this.isSelected = false;
+    
+    // this.isSelected = false;
+    this.text = "";
 
     this.contourCurve = d3.line().curve(d3.curveBasisClosed);
   }
@@ -155,6 +157,13 @@ export class Episode {
   animateSelectionContext(scale, translation) {
     let thisObj = this;
     
+    // var myText =  svg.append("text")
+    // .attr("y", 200)//magic number here
+    // .attr("x", 100)
+    // .attr('text-anchor', 'middle')
+    // .attr("class", "myLabel")//easy to style with CSS
+    // .text("I'm a label");
+
     d3
     .select('path#'.concat(thisObj.identity))
     .transition()
@@ -163,10 +172,12 @@ export class Episode {
     .attr('transform', function(d, i) {
       return "translate(" + translation[0] + "," + translation[1] + ") scale(" + scale + ")";
     }); 
+
+ 
   }
   
   animateSelection() {
-    this.isSelected = true;
+    // this.isSelected = true;
     let thisObj = this;
     
     d3
@@ -177,7 +188,36 @@ export class Episode {
     .attr("stroke", rgb(255, 255, 255))
     .attr('transform', function(d, i) {
       return "translate(" + thisObj.selectionTranslation[0] + "," + thisObj.selectionTranslation[1] + ") scale(" + thisObj.selectionScale + ")";
+    })
+    .on("end", function(d) {
+      // d3.select('g')
+      // .append("foreignObject")
+      // .attr("x", AppState.width/2 - 200)
+      // .attr("y", AppState.height/2)
+      // .attr("width", 200)
+      // .attr("height", 20)
+      // .html(function(d) {
+      //   return '<input type="text" value="Text goes here" />';
+      // });
+
+      // d3.select('body')
+      //   .append('div')
+      //   .append('input')
+      //   .attr('type','text')
+      //   .attr('name','textInput')
+      //   .attr("x", AppState.width/2 - 200)
+      //   .attr("y", AppState.height/2)
+      //   .attr("width", 200)
+      //   .attr("height", 200)
+      //   .attr('value','Text goes here')
+
+
     });
+
+  
+
+    
+
   }
 
   /// the parameters are for the initial selected state
@@ -198,7 +238,7 @@ export class Episode {
   }
 
   animateUnselection() {
-    this.isSelected = false;
+    // this.isSelected = false;
     let thisObj = this;
     
     d3
