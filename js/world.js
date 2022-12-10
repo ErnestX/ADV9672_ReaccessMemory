@@ -83,7 +83,8 @@ export class World {
     .attr("y", AppState.height/2)
     .attr('text-anchor', 'middle')
     .attr("class", "myLabel")//easy to style with CSS
-    .text("I'm a label");
+    .attr("fill", "white")
+    .text("");
   }
 
   selectEpisode(eps) {

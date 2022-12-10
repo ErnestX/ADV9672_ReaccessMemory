@@ -13,7 +13,7 @@ export class Episode {
     this.identity = id;
     
     // this.isSelected = false;
-    this.text = "";
+    this.text = "testing";
 
     this.contourCurve = d3.line().curve(d3.curveBasisClosed);
   }
@@ -156,13 +156,6 @@ export class Episode {
 
   animateSelectionContext(scale, translation) {
     let thisObj = this;
-    
-    // var myText =  svg.append("text")
-    // .attr("y", 200)//magic number here
-    // .attr("x", 100)
-    // .attr('text-anchor', 'middle')
-    // .attr("class", "myLabel")//easy to style with CSS
-    // .text("I'm a label");
 
     d3
     .select('path#'.concat(thisObj.identity))
@@ -172,8 +165,6 @@ export class Episode {
     .attr('transform', function(d, i) {
       return "translate(" + translation[0] + "," + translation[1] + ") scale(" + scale + ")";
     }); 
-
- 
   }
   
   animateSelection() {
@@ -190,34 +181,12 @@ export class Episode {
       return "translate(" + thisObj.selectionTranslation[0] + "," + thisObj.selectionTranslation[1] + ") scale(" + thisObj.selectionScale + ")";
     })
     .on("end", function(d) {
-      // d3.select('g')
-      // .append("foreignObject")
-      // .attr("x", AppState.width/2 - 200)
-      // .attr("y", AppState.height/2)
-      // .attr("width", 200)
-      // .attr("height", 20)
-      // .html(function(d) {
-      //   return '<input type="text" value="Text goes here" />';
-      // });
-
-      // d3.select('body')
-      //   .append('div')
-      //   .append('input')
-      //   .attr('type','text')
-      //   .attr('name','textInput')
-      //   .attr("x", AppState.width/2 - 200)
-      //   .attr("y", AppState.height/2)
-      //   .attr("width", 200)
-      //   .attr("height", 200)
-      //   .attr('value','Text goes here')
-
-
+        AppState.textLabel.text(thisObj.text);
     });
+  }
 
-  
-
-    
-
+  refreshText() {
+    AppState.textLabel.text(thisObj.text);
   }
 
   /// the parameters are for the initial selected state
