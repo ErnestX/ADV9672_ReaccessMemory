@@ -31,13 +31,14 @@ export class Mountain {
         currentPoints[i][1] += (basePointsAverage[1] - currentPoints[i][1]) / esCount;
       }
 
+      let transformData = Episode.scaleAndTranslationGivenPoints(currentPoints);
       this.episodes.push(new Episode(this.world, 
         [this], 
         lineWidth, 
         lineColor, 
         twoLevelCopyArr(currentPoints), 
-        2, 
-        [10,20], 
+        transformData[0], 
+        transformData[1], 
         eId)); 
     }
   } 
@@ -120,27 +121,6 @@ export class Mountain {
       this.episodes[i].animateUnselectionContext(scale, translation);
     }
   }
-
-  // animateUnselecting() {
-  //   for (let i = 0; i < this.episodes.length; i++){
-  //     if (this.episodes[i].isSelected) {
-  //       this.episodes[i].animateUnselected();
-  //     } else {
-  //       this.episodes[i].animateUndismissed();
-  //     }
-  //   }
-  // }
-
-  // animateSelecting(episodeId) {
-  //   //console.log("animating selected id: ".concat(episodeId));
-  //   for (let i = 0; i < this.episodes.length; i++){
-  //     if (this.episodes[i].identity !== episodeId) {
-  //       this.episodes[i].animateDismissed();
-  //     } else {
-  //       this.episodes[i].animateSelected();
-  //     }
-  //   }
-  // }
 
   getEpisode(eId) {
     for (let i = 0; i < this.episodes.length; i++){

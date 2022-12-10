@@ -1,3 +1,4 @@
+import { AppState } from "./appState.js";
 import { rgb, twoLevelCopyArr, uuidv4, blendColors, arePointsEqual } from "./utilities.js";
 
 export class Episode {
@@ -13,6 +14,46 @@ export class Episode {
     this.isSelected = false;
 
     this.contourCurve = d3.line().curve(d3.curveBasisClosed);
+  }
+
+  /// calculate the scale and translation transformations when the episode is selected 
+  static scaleAndTranslationGivenPoints(pts) {
+    let xMaxDist = 0;
+    let yMaxDist = 0;
+    let xSum = 0;
+    let ySum = 0;
+
+    for (let i = 0; i < pts.length; i++) {
+      for (let j = i; j < pts.length; j++) {
+        let xDist = Math.abs(pts[i][0] - pts[j][0]);
+        let yDist = Math.abs(pts[i][1] - pts[j][1]);
+        xMaxDist = Math.max(xMaxDist, xDist);
+        yMaxDist = Math.max(yMaxDist, yDist);
+
+        xSum += pts[i][0];
+        ySum += pts[i][1];
+      }
+    }
+
+    let padding = 50;
+    let scale;
+    if (xMaxDist / yMaxDist > AppState.width / AppState.height) {
+      // use X axis
+      scale = (AppState.width - padding*2) / xMaxDist;
+    } else {
+      // use Y axis
+      scale = (AppState.height - padding*2) / yMaxDist;
+    }
+
+    let xCenter = xSum / pts.length;
+    let yCenter = ySum / pts.length;
+
+    let xDestination = AppState.width / 2;
+    let yDestination = AppState.height / 2;
+
+    let translation = [xDestination - xCenter, yDestination - yCenter];
+
+    return [scale, translation];
   }
 
   static combineEpisodes(eps1, eps2) {
@@ -55,13 +96,14 @@ export class Episode {
     console.log("combined points: ");
     console.log(combinedPoints);
 
+    let transformData = Episode.scaleAndTranslationGivenPoints(combinedPoints);
     return new Episode(eps1.world, 
       [...new Set(eps1.mountains.concat(eps2.mountains))], 
       (eps1.lineWeight + eps2.lineWeight)/2.0, 
       blendColors(eps1.lineColor, eps2.lineColor, 0.5), 
       combinedPoints, 
-      2, 
-      [10,20],
+      transformData[0], 
+      transformData[1],
       "episode".concat(uuidv4())); // fix: max points
   }
 
