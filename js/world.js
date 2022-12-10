@@ -89,7 +89,6 @@ export class World {
 
     for (let i = 0; i < this.mountains.length; i++) {
       this.mountains[i].recoverablePopUntilEpisode(eId);
-      // this.mountains[i].animateSelecting(eId);
     }
 
     this.render();

@@ -125,9 +125,9 @@ export class Episode {
     .attr("fill", "transparent")
     .attr("stroke", thisObj.lineColor)
     .attr("stroke-width", thisObj.lineWeight)
-    // .on("click", function () {
-    //   thisObj.world.selectEpisode(thisObj);
-    // })
+    .on("click", function () {
+      thisObj.world.selectEpisode(thisObj);
+    })
     .on("mouseover", function() {
       d3
       .select('path#'.concat(thisObj.identity))
