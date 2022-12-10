@@ -108,6 +108,12 @@ export class Mountain {
     } while (typeof eps !== 'undefined')
   }
 
+  animateSelectionWithTransformation(scale, translation) {
+    for (let i = 0; i < this.episodes.length; i++) { 
+      this.episodes[i].animateSelectionContext(scale, translation);
+    }
+  }
+
   animateUnselecting() {
     for (let i = 0; i < this.episodes.length; i++){
       if (this.episodes[i].isSelected) {

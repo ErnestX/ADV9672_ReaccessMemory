@@ -79,7 +79,8 @@ export class World {
     }
   }
 
-  selectEpisode(eId) {
+  selectEpisode(eps) {
+    let eId = eps.identity;
     if (AppState.state !== 0) {
       return;
     }
@@ -91,6 +92,12 @@ export class World {
     }
 
     this.render();
+
+    for (let i = 0; i < this.mountains.length; i++) { 
+      this.mountains[i].animateSelectionWithTransformation(eps.selectionScale, eps.selectionTranslation);
+    }
+
+    eps.animateSelection();
   }
 
   unselect() {

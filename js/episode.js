@@ -76,7 +76,7 @@ export class Episode {
     .attr("stroke", thisObj.lineColor)
     .attr("stroke-width", thisObj.lineWeight)
     .on("click", function () {
-      thisObj.world.selectEpisode(thisObj.identity);
+      thisObj.world.selectEpisode(thisObj);
     })
     .on("mouseover", function() {
       d3
@@ -96,7 +96,20 @@ export class Episode {
     });
   }
 
-  animateSelected() {
+  animateSelectionContext(scale, translation) {
+    let thisObj = this;
+    
+    d3
+    .select('path#'.concat(thisObj.identity))
+    .transition()
+    .duration(2000)
+    .attr("stroke-width", 1 / scale)
+    .attr('transform', function(d, i) {
+      return "translate(" + translation[0] + "," + translation[1] + ") scale(" + scale + ")";
+    }); 
+  }
+  
+  animateSelection() {
     this.isSelected = true;
     let thisObj = this;
     
@@ -104,43 +117,43 @@ export class Episode {
     .select('path#'.concat(thisObj.identity))
     .transition()
     .duration(2000)
-    .attr("stroke-width", 1 / thisObj.selectionScale)
+    .attr("stroke-width", 3)
     .attr("stroke", rgb(255, 255, 255))
     .attr('transform', function(d, i) {
       return "translate(" + thisObj.selectionTranslation[0] + "," + thisObj.selectionTranslation[1] + ") scale(" + thisObj.selectionScale + ")";
     });
   }
 
-  animateUnselected() {
-    //this.isSelected = false;
-    let thisObj = this;
-    d3
-      .select('path#'.concat(thisObj.identity))
-      .transition()
-      .duration(2000)
-      .attr("stroke-width", thisObj.lineWeight)
-      .attr("stroke", thisObj.lineColor)
-      .attr('transform', function(d, i) {
-        return "translate(0,0) scale(1)";
-      })
-      .on("end", thisObj.isSelected = false);
-  }
+  // animateUnselected() {
+  //   //this.isSelected = false;
+  //   let thisObj = this;
+  //   d3
+  //     .select('path#'.concat(thisObj.identity))
+  //     .transition()
+  //     .duration(2000)
+  //     .attr("stroke-width", thisObj.lineWeight)
+  //     .attr("stroke", thisObj.lineColor)
+  //     .attr('transform', function(d, i) {
+  //       return "translate(0,0) scale(1)";
+  //     })
+  //     .on("end", thisObj.isSelected = false);
+  // }
 
-  animateDismissed() {
-    d3
-    .select('path#'.concat(this.identity))
-    .transition()
-    .duration(1500)
-    .style('opacity', 0.0);
-  }
+  // animateDismissed() {
+  //   d3
+  //   .select('path#'.concat(this.identity))
+  //   .transition()
+  //   .duration(1500)
+  //   .style('opacity', 0.0);
+  // }
 
-  animateUndismissed() {
-    d3
-    .select('path#'.concat(this.identity))
-    .transition()
-    .duration(1500)
-    .style('opacity', 1.0);
-  }
+  // animateUndismissed() {
+  //   d3
+  //   .select('path#'.concat(this.identity))
+  //   .transition()
+  //   .duration(1500)
+  //   .style('opacity', 1.0);
+  // }
 
   mountainLabels() {
     let output = [];
