@@ -159,7 +159,7 @@ export class Episode {
     .select('path#'.concat(thisObj.identity))
     .transition()
     .duration(2000)
-    .attr("stroke-width", 3)
+    .attr("stroke-width", 1)
     .attr("stroke", rgb(255, 255, 255))
     .attr('transform', function(d, i) {
       return "translate(" + thisObj.selectionTranslation[0] + "," + thisObj.selectionTranslation[1] + ") scale(" + thisObj.selectionScale + ")";
@@ -189,7 +189,7 @@ export class Episode {
     
     d3
     .select('path#'.concat(thisObj.identity))
-    .attr("stroke-width", 3)
+    .attr("stroke-width", 1)
     .attr("stroke", rgb(255, 255, 255))
     .attr('transform', function(d, i) {
       return "translate(" + thisObj.selectionTranslation[0] + "," + thisObj.selectionTranslation[1] + ") scale(" + thisObj.selectionScale + ")";
