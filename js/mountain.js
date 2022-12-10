@@ -10,13 +10,7 @@ export class Mountain {
     this.shiftCache = [];
     this.popCache = [];
 
-    let basePointsAverage = [0, 0];
-    for (let i = 0; i < this.basePoints.length; i++) {
-      basePointsAverage[0] += this.basePoints[i][0];
-      basePointsAverage[1] += this.basePoints[i][1];
-    }
-    basePointsAverage[0] /= this.basePoints.length;
-    basePointsAverage[1] /= this.basePoints.length;
+    let basePointsAverage = this.calcBasePointsAverage();
 
     let currentPoints = twoLevelCopyArr(this.basePoints);
 
@@ -42,6 +36,45 @@ export class Mountain {
         eId)); 
     }
   } 
+
+  calcBasePointsAverage() {
+    let basePointsAverage = [0, 0];
+    for (let i = 0; i < this.basePoints.length; i++) {
+      basePointsAverage[0] += this.basePoints[i][0];
+      basePointsAverage[1] += this.basePoints[i][1];
+    }
+    basePointsAverage[0] /= this.basePoints.length;
+    basePointsAverage[1] /= this.basePoints.length;
+
+    return basePointsAverage;
+  }
+
+  /// reassign the appearance of episodes
+  reformEpisodes() {
+    this.recoverEpisodes();
+
+    let basePointsAverage = this.calcBasePointsAverage();
+
+    let currentPoints = twoLevelCopyArr(this.basePoints);
+    for (let e = 0; e < this.episodes.length; e++) {
+      let lc = 175 + 80 / this.episodes.length * e;
+      let lineColor = rgb(lc, lc, lc);
+      let lineWidth = 0.9 + 0.9 / this.episodes.length * e;
+      for (let i = 0; i < currentPoints.length; i++) {
+        currentPoints[i][0] += (basePointsAverage[0] - currentPoints[i][0]) / this.episodes.length;
+        currentPoints[i][1] += (basePointsAverage[1] - currentPoints[i][1]) / this.episodes.length;
+      }
+
+      let transformData = Episode.scaleAndTranslationGivenPoints(twoLevelCopyArr(currentPoints));
+
+      this.episodes[e].lineWeight = lineWidth;
+      this.episodes[e].lineColor = lineColor;
+      this.episodes[e].points = twoLevelCopyArr(currentPoints);
+      this.episodes[e].selectionScale = transformData[0];
+      this.episodes[e].selectionTranslation = transformData[1];
+    }
+    this.world.render();
+  }
 
   /// Assume the mountains are different
   static combineEpisodes(mtns1, mtns2, epsId1, epsId2) {
@@ -129,5 +162,18 @@ export class Mountain {
       }
     }
     return null;
+  }
+
+  createAndPushNewEpisode() {
+    this.episodes.push(new Episode(this.world, 
+      [this], 
+      1, 
+      rgb(127, 127, 127), 
+      this.basePoints, 
+      1.0, 
+      [0,0], 
+      "episode".concat(uuidv4())));
+
+    this.reformEpisodes();
   }
 }

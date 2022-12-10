@@ -27,7 +27,7 @@ export class World {
     for (let i = 0; i < numOfMountains; i++) {
       let polygonVertexes = voronoiDiagram.cellPolygon(i);
       polygonVertexes.pop(); // the last point repeats the first point
-      this.mountains.push(new Mountain(this, polygonVertexes, 5, "mtn".concat(uuidv4())));
+      this.mountains.push(new Mountain(this, polygonVertexes, 3, "mtn".concat(uuidv4())));
     }
   }
 

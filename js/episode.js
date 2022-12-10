@@ -104,7 +104,7 @@ export class Episode {
       combinedPoints, 
       transformData[0], 
       transformData[1],
-      "episode".concat(uuidv4())); // fix: max points
+      "episode".concat(uuidv4())); 
   }
 
   render(svg) {
@@ -114,12 +114,12 @@ export class Episode {
     .attr("id", thisObj.identity)
     .attr('d', thisObj.contourCurve(thisObj.points))
     .attr("stroke-linejoin", "round")
-    .attr("fill", "black")
+    .attr("fill", "transparent")
     .attr("stroke", thisObj.lineColor)
     .attr("stroke-width", thisObj.lineWeight)
-    .on("click", function () {
-      thisObj.world.selectEpisode(thisObj);
-    })
+    // .on("click", function () {
+    //   thisObj.world.selectEpisode(thisObj);
+    // })
     .on("mouseover", function() {
       d3
       .select('path#'.concat(thisObj.identity))
@@ -128,13 +128,19 @@ export class Episode {
     .on("mouseout", function() {
       d3
       .select('path#'.concat(thisObj.identity))
-      .attr("fill", "black");
+      .attr("fill", "transparent");
     })
     .on("mousedown", function() {
       thisObj.world.combineEpisodeAtMtns(thisObj.identity, thisObj.mountainLabels());
     })
     .on("mouseup", function() {
       thisObj.world.combineWithEpisodeAtMtns(thisObj.identity, thisObj.mountainLabels());
+    })
+    .on("dblclick", function() {
+      console.log("double clicked!!!!!!!!!!!!!");
+      for (let i = 0; i < thisObj.mountains.length; i++) {
+        thisObj.mountains[i].createAndPushNewEpisode();
+      }
     });
   }
 
