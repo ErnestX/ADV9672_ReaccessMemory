@@ -13,8 +13,7 @@ export class Episode {
     this.identity = id;
     this.centerPoint = Episode.calcCenterPoint(pts);
     
-    // this.isSelected = false;
-    this.text = "test1";
+    this.text = "";
 
     this.contourCurve = d3.line().curve(d3.curveBasisClosed);
   }
@@ -173,7 +172,6 @@ export class Episode {
   }
   
   animateSelection() {
-    // this.isSelected = true;
     let thisObj = this;
     
     d3
@@ -186,9 +184,6 @@ export class Episode {
       return "translate(" + thisObj.selectionTranslation[0] + "," + thisObj.selectionTranslation[1] + ") scale(" + thisObj.selectionScale + ")";
     }) 
     .on("end", function(d) {
-      AppState.textLabel
-      .attr("x", thisObj.centerPoint[0] * thisObj.selectionScale + thisObj.selectionTranslation[0])
-      .attr("y", thisObj.centerPoint[1] * thisObj.selectionScale + thisObj.selectionTranslation[1]);
       AppState.textLabel.text(thisObj.text);
     });
   }
@@ -215,7 +210,6 @@ export class Episode {
   }
 
   animateUnselection() {
-    // this.isSelected = false;
     let thisObj = this;
     
     d3
