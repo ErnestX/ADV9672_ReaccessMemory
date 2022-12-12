@@ -11,15 +11,13 @@ export class Mountain {
     this.popCache = [];
 
     let basePointsAverage = this.calcBasePointsAverage();
-
-    let currentPoints = twoLevelCopyArr(this.basePoints);
-
     // init episodes
     for (let e = 0; e < esCount; e++) {
+      let currentPoints = twoLevelCopyArr(this.basePoints);
       let eId = "episode".concat(uuidv4());
       for (let i = 0; i < currentPoints.length; i++) {
-        currentPoints[i][0] += (basePointsAverage[0] - currentPoints[i][0]) / esCount;
-        currentPoints[i][1] += (basePointsAverage[1] - currentPoints[i][1]) / esCount;
+        currentPoints[i][0] += (basePointsAverage[0] - currentPoints[i][0]) / (esCount + 1) * (e + 1);
+        currentPoints[i][1] += (basePointsAverage[1] - currentPoints[i][1]) / (esCount + 1) * (e + 1);
       }
 
       let lineProperties = Episode.calcLineWeightAndColor(esCount, e);

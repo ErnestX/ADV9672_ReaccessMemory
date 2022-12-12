@@ -10,7 +10,6 @@ document.getElementById('SvgContour').style.height = AppState.height.toString().
 const world = new World(AppState.width, AppState.height, 5);
 world.render();
 
-
 document.addEventListener("keydown", function(event) {
   const key = event.key; // Or const {key} = event; in ES6+
   if (key === "Escape") {

@@ -147,8 +147,7 @@ export class Episode {
       thisObj.world.combineWithEpisodeAtMtns(thisObj.identity, thisObj.mountainLabels());
     })
     .on("contextmenu", function(e) {
-      console.log("right clicked");
-      e.preventDefault();
+      e.preventDefault(); // prevent menu from popping out
       for (let i = 0; i < thisObj.mountains.length; i++) {
         thisObj.mountains[i].createAndPushNewEpisode();
       }
