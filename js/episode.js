@@ -92,9 +92,13 @@ export class Episode {
       eps2Points.push(p);
     }
 
-    // Step2: remove p1 and p2. this makes the connection wider
-    //eps1Points.pop();
-    //eps2Points.shift();
+    ////Step2: remove p1 and p2. this makes the connection wider
+    // let endP1 = eps1Points.pop();
+    // let startP2 = eps2Points.shift();
+    // let middleP1 = [(endP1[0] * 2 + eps2.centerPoint[0])/3, (endP1[1] * 2 + eps2.centerPoint[1])/3];
+    // let middleP2 = [(eps1.centerPoint[0] + startP2[0]*2)/3, (eps1.centerPoint[1] + startP2[1]*2)/3];
+    // eps1Points.push(middleP1);
+    // eps2Points.unshift(middleP2);
 
     // Step3: concat
     let combinedPoints = eps1Points.concat(eps2Points);
