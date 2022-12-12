@@ -11,11 +11,25 @@ export class Episode {
     this.selectionScale = selScale; 
     this.selectionTranslation = selTrans;
     this.identity = id;
+    this.centerPoint = Episode.calcCenterPoint(pts);
     
     // this.isSelected = false;
     this.text = "test1";
 
     this.contourCurve = d3.line().curve(d3.curveBasisClosed);
+  }
+
+  static calcCenterPoint(pts) {
+    let xSum = 0;
+    let ySum = 0;
+    for (let i = 0; i < pts.length; i++) {
+      xSum += pts[i][0];
+      ySum += pts[i][1];
+    }
+
+    let xCenter = xSum / pts.length;
+    let yCenter = ySum / pts.length;
+    return [xCenter, yCenter];
   }
 
   /// calculate the scale and translation transformations when the episode is selected 
@@ -41,20 +55,11 @@ export class Episode {
       scale = (AppState.height) / yMaxDist;
     }
 
-    let xSum = 0;
-    let ySum = 0;
-    for (let i = 0; i < pts.length; i++) {
-      xSum += pts[i][0];
-      ySum += pts[i][1];
-    }
-
-    let xCenter = xSum / pts.length;
-    let yCenter = ySum / pts.length;
-
     let xScreenCenter = AppState.width / 2;
     let yScreenCenter = AppState.height / 2; 
 
-    let translation = [xScreenCenter - xCenter*scale, yScreenCenter - yCenter*scale];
+    let centerPoint = Episode.calcCenterPoint(pts);
+    let translation = [xScreenCenter - centerPoint[0]*scale, yScreenCenter - centerPoint[1]*scale];
     return [scale, translation];
   }
 
@@ -179,9 +184,12 @@ export class Episode {
     .attr("stroke", rgb(255, 255, 255))
     .attr('transform', function(d, i) {
       return "translate(" + thisObj.selectionTranslation[0] + "," + thisObj.selectionTranslation[1] + ") scale(" + thisObj.selectionScale + ")";
-    })
+    }) 
     .on("end", function(d) {
-        AppState.textLabel.text(thisObj.text);
+      AppState.textLabel
+      .attr("x", thisObj.centerPoint[0] * thisObj.selectionScale + thisObj.selectionTranslation[0])
+      .attr("y", thisObj.centerPoint[1] * thisObj.selectionScale + thisObj.selectionTranslation[1]);
+      AppState.textLabel.text(thisObj.text);
     });
   }
 
