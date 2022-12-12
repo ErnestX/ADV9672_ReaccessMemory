@@ -124,7 +124,7 @@ export class Episode {
     .attr("id", thisObj.identity)
     .attr('d', thisObj.contourCurve(thisObj.points))
     .attr("stroke-linejoin", "round")
-    .attr("fill", "transparent")
+    .attr("fill", "black")
     .attr("stroke", thisObj.lineColor)
     .attr("stroke-width", thisObj.lineWeight)
     .on("click", function () {
@@ -138,7 +138,7 @@ export class Episode {
     .on("mouseout", function() {
       d3
       .select('path#'.concat(thisObj.identity))
-      .attr("fill", "transparent");
+      .attr("fill", "black");
     })
     .on("mousedown", function() {
       thisObj.world.combineEpisodeAtMtns(thisObj.identity, thisObj.mountainLabels());
@@ -146,8 +146,9 @@ export class Episode {
     .on("mouseup", function() {
       thisObj.world.combineWithEpisodeAtMtns(thisObj.identity, thisObj.mountainLabels());
     })
-    .on("dblclick", function() {
-      console.log("double clicked!!!!!!!!!!!!!");
+    .on("contextmenu", function(e) {
+      console.log("right clicked");
+      e.preventDefault();
       for (let i = 0; i < thisObj.mountains.length; i++) {
         thisObj.mountains[i].createAndPushNewEpisode();
       }
