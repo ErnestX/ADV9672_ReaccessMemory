@@ -16,6 +16,8 @@ export class Episode {
     this.text = "";
 
     this.contourCurve = d3.line().curve(d3.curveBasisClosed);
+
+    this.isCombined = false;
   }
 
   static calcCenterPoint(pts) {
@@ -107,7 +109,7 @@ export class Episode {
     console.log(combinedPoints);
 
     let transformData = Episode.scaleAndTranslationGivenPoints(twoLevelCopyArr(combinedPoints));
-    return new Episode(eps1.world, 
+    let newEps = new Episode(eps1.world, 
       [...new Set(eps1.mountains.concat(eps2.mountains))], 
       (eps1.lineWeight + eps2.lineWeight)/2.0, 
       blendColors(eps1.lineColor, eps2.lineColor, 0.5), 
@@ -115,6 +117,9 @@ export class Episode {
       transformData[0], 
       transformData[1],
       "episode".concat(uuidv4())); 
+    newEps.isCombined = true;
+
+    return newEps;
   }
 
   static calcLineWeightAndColor(totalCount, index) {
