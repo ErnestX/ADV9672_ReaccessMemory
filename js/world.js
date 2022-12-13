@@ -1,7 +1,8 @@
-import { uuidv4, mapRange } from "./utilities.js";
+import { uuidv4, mapRange, blendColors } from "./utilities.js";
 import { Mountain } from "./mountain.js";
 import { AppState } from "./appState.js";
 import {Delaunay} from "https://cdn.skypack.dev/d3-delaunay@6";
+import { Episode } from "./episode.js";
 
 export class World {
   constructor(w, h, numOfMountains) {
@@ -158,10 +159,31 @@ export class World {
         for (let j = i+1; j < this.combiningQueue.length; j++) {
           if (this.combiningQueue[i][1] === this.combiningQueue[j][1]) {
             // found the same episodes appearing twice. Combine the two sets of points! 
-            
+            console.log("processing queue!!!");
+            let combinedPoints = Episode.combineEpisodePoints(this.combiningQueue[i][2], this.combiningQueue[j][2]);
+            let transformData = Episode.calcScaleAndTranslationGivenPoints(combinedPoints);
+            let mtn = this.getMountain(this.combiningQueue[i][0]);
+            let combinedEps = mtn.getEpisode(this.combiningQueue[i][1]);
+            combinedEps.lineWeight = (this.combiningQueue[i][3] + this.combiningQueue[j][3])/2;
+            combinedEps.lineColor = blendColors(this.combiningQueue[i][4], this.combiningQueue[j][4], 0.5);
+            combinedEps.points = combinedEps;
+            combinedEps.selectionScale = transformData[0];
+            combinedEps.selectionTranslation = transformData[1];
+
+            this.combiningQueue.splice(j, 1);
+            this.combiningQueue.splice(i, 1);
+
+            this.render();
+            return;
           }
         }
       }
+    }
+  }
+
+  reformAllEpisodes() {
+    for (let i = 0; i < this.mountains.length; i++) {
+      this.mountains[i].reformEpisodes();
     }
   }
 

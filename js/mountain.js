@@ -21,7 +21,7 @@ export class Mountain {
       }
 
       let lineProperties = Episode.calcLineWeightAndColor(esCount, e);
-      let transformData = Episode.scaleAndTranslationGivenPoints(twoLevelCopyArr(currentPoints));
+      let transformData = Episode.calcScaleAndTranslationGivenPoints(twoLevelCopyArr(currentPoints));
 
       this.episodes.push(new Episode(this.world, 
         [this], 
@@ -52,16 +52,16 @@ export class Mountain {
 
     let basePointsAverage = this.calcBasePointsAverage();
 
-    let currentPoints = twoLevelCopyArr(this.basePoints);
     for (let e = 0; e < this.episodes.length; e++) {
+      let currentPoints = twoLevelCopyArr(this.basePoints);
       for (let i = 0; i < currentPoints.length; i++) {
-        currentPoints[i][0] += (basePointsAverage[0] - currentPoints[i][0]) / this.episodes.length;
-        currentPoints[i][1] += (basePointsAverage[1] - currentPoints[i][1]) / this.episodes.length;
+        currentPoints[i][0] += (basePointsAverage[0] - currentPoints[i][0]) / (this.episodes.length+1) * (e+1);
+        currentPoints[i][1] += (basePointsAverage[1] - currentPoints[i][1]) / (this.episodes.length+1) * (e+1);
       }
 
+      let lineProperties = Episode.calcLineWeightAndColor(this.episodes.length, e);
       if (this.episodes[e].mountains.length <= 1) {
-        let lineProperties = Episode.calcLineWeightAndColor(this.episodes.length, e);
-        let transformData = Episode.scaleAndTranslationGivenPoints(twoLevelCopyArr(currentPoints));
+        let transformData = Episode.calcScaleAndTranslationGivenPoints(twoLevelCopyArr(currentPoints));
   
         this.episodes[e].lineWeight = lineProperties[0];
         this.episodes[e].lineColor = lineProperties[1];
@@ -70,10 +70,15 @@ export class Mountain {
         this.episodes[e].selectionTranslation = transformData[1];
       } else {
         // this is a combined episode spanning across multiple mountains
-        this.world.combiningQueue.push([this.label, this.episodes[e].identity, twoLevelCopyArr(currentPoints)]);
+        this.world.combiningQueue.push([
+          this.label, 
+          this.episodes[e].identity, 
+          twoLevelCopyArr(currentPoints), 
+          lineProperties[0], 
+          lineProperties[1]]);
+
         this.world.processCombiningQueue();
       }
-   
     }
     this.world.render();
   }
@@ -176,6 +181,6 @@ export class Mountain {
       [0,0], 
       "episode".concat(uuidv4())));
 
-    this.reformEpisodes();
+    this.world.reformAllEpisodes();
   }
 }

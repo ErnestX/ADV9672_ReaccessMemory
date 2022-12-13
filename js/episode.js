@@ -32,7 +32,7 @@ export class Episode {
   }
 
   /// calculate the scale and translation transformations when the episode is selected 
-  static scaleAndTranslationGivenPoints(pts) {
+  static calcScaleAndTranslationGivenPoints(pts) {
     let xMaxDist = 0;
     let yMaxDist = 0;
 
@@ -106,7 +106,7 @@ export class Episode {
   static combineEpisodes(eps1, eps2) {
     let combinedPoints = Episode.combineEpisodePoints(twoLevelCopyArr(eps1.points), twoLevelCopyArr(eps2.points));
 
-    let transformData = Episode.scaleAndTranslationGivenPoints(twoLevelCopyArr(combinedPoints));
+    let transformData = Episode.calcScaleAndTranslationGivenPoints(twoLevelCopyArr(combinedPoints));
     let newEps = new Episode(eps1.world, 
       [...new Set(eps1.mountains.concat(eps2.mountains))], 
       (eps1.lineWeight + eps2.lineWeight)/2.0, 
