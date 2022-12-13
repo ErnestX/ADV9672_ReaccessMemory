@@ -12,6 +12,8 @@ export class World {
     this.height = h;
     this.mountains = [];
 
+    this.combiningQueue = [];
+
     let padding = Math.max(this.width, this.height) / 4;
     let mountainBasePoints = [];
     for (let i = 0; i < numOfMountains; i++) {
@@ -148,6 +150,19 @@ export class World {
     }
     Mountain.combineEpisodes(this.getMountains(this.mtnsOfEpisodeToCombine), this.getMountains(mLbs), this.episodeToCombine, eId);
     this.render();
+  }
+
+  processCombiningQueue() {
+    if (this.combiningQueue.length > 1) {
+      for (let i = 0; i < this.combiningQueue.length; i++) {
+        for (let j = i+1; j < this.combiningQueue.length; j++) {
+          if (this.combiningQueue[i][1] === this.combiningQueue[j][1]) {
+            // found the same episodes appearing twice. Combine the two sets of points! 
+            
+          }
+        }
+      }
+    }
   }
 
   getMountains(mLbs) {

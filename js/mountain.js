@@ -59,14 +59,21 @@ export class Mountain {
         currentPoints[i][1] += (basePointsAverage[1] - currentPoints[i][1]) / this.episodes.length;
       }
 
-      let lineProperties = Episode.calcLineWeightAndColor(this.episodes.length, e);
-      let transformData = Episode.scaleAndTranslationGivenPoints(twoLevelCopyArr(currentPoints));
-
-      this.episodes[e].lineWeight = lineProperties[0];
-      this.episodes[e].lineColor = lineProperties[1];
-      this.episodes[e].points = twoLevelCopyArr(currentPoints);
-      this.episodes[e].selectionScale = transformData[0];
-      this.episodes[e].selectionTranslation = transformData[1];
+      if (this.episodes[e].mountains.length <= 1) {
+        let lineProperties = Episode.calcLineWeightAndColor(this.episodes.length, e);
+        let transformData = Episode.scaleAndTranslationGivenPoints(twoLevelCopyArr(currentPoints));
+  
+        this.episodes[e].lineWeight = lineProperties[0];
+        this.episodes[e].lineColor = lineProperties[1];
+        this.episodes[e].points = twoLevelCopyArr(currentPoints);
+        this.episodes[e].selectionScale = transformData[0];
+        this.episodes[e].selectionTranslation = transformData[1];
+      } else {
+        // this is a combined episode spanning across multiple mountains
+        this.world.combiningQueue.push([this.label, this.episodes[e].identity, twoLevelCopyArr(currentPoints)]);
+        this.world.processCombiningQueue();
+      }
+   
     }
     this.world.render();
   }

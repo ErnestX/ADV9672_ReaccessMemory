@@ -16,8 +16,6 @@ export class Episode {
     this.text = "";
 
     this.contourCurve = d3.line().curve(d3.curveBasisClosed);
-
-    this.isCombined = false;
   }
 
   static calcCenterPoint(pts) {
@@ -64,10 +62,7 @@ export class Episode {
     return [scale, translation];
   }
 
-  static combineEpisodes(eps1, eps2) {
-    let eps1Points = twoLevelCopyArr(eps1.points);
-    let eps2Points = twoLevelCopyArr(eps2.points);
-
+  static combineEpisodePoints(eps1Points, eps2Points) {
     let minDistance = Infinity;
     let p1ForMinDist = [];
     let p2ForMinDist = [];
@@ -105,8 +100,11 @@ export class Episode {
     // Step3: concat
     let combinedPoints = eps1Points.concat(eps2Points);
     
-    console.log("combined points: ");
-    console.log(combinedPoints);
+    return combinedPoints;
+  }
+
+  static combineEpisodes(eps1, eps2) {
+    let combinedPoints = Episode.combineEpisodePoints(twoLevelCopyArr(eps1.points), twoLevelCopyArr(eps2.points));
 
     let transformData = Episode.scaleAndTranslationGivenPoints(twoLevelCopyArr(combinedPoints));
     let newEps = new Episode(eps1.world, 
@@ -117,7 +115,6 @@ export class Episode {
       transformData[0], 
       transformData[1],
       "episode".concat(uuidv4())); 
-    newEps.isCombined = true;
 
     return newEps;
   }
