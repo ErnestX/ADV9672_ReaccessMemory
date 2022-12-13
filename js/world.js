@@ -1,4 +1,4 @@
-import { uuidv4, mapRange, blendColors } from "./utilities.js";
+import { uuidv4, mapRange, blendColors, twoLevelCopyArr } from "./utilities.js";
 import { Mountain } from "./mountain.js";
 import { AppState } from "./appState.js";
 import {Delaunay} from "https://cdn.skypack.dev/d3-delaunay@6";
@@ -172,6 +172,13 @@ export class World {
             combinedEps.selectionScale = transformData[0];
             combinedEps.selectionTranslation = transformData[1];
 
+            this.combiningQueue.push([
+              this.combiningQueue[i][0], 
+              combinedEps.identity, 
+              twoLevelCopyArr(combinedEps.points), 
+              combinedEps.lineWeight, 
+              combinedEps.lineColor]);
+
             this.combiningQueue.splice(j, 1);
             this.combiningQueue.splice(i, 1);
 
@@ -187,6 +194,7 @@ export class World {
     for (let i = 0; i < this.mountains.length; i++) {
       this.mountains[i].reformEpisodes();
     }
+    this.combiningQueue = [];
   }
 
   getMountains(mLbs) {
