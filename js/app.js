@@ -26,7 +26,7 @@ document.addEventListener("keydown", function(event) {
       break;
     default:
       AppState.textBuffer = AppState.textBuffer.concat(key);
-      console.log("ohter key pressed");
+      console.log("other key pressed");
       console.log(AppState.textBuffer);
   }
 });

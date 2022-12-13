@@ -22,8 +22,8 @@ export class World {
       let y = mapRange(Math.random(), 0.0, 1.0, padding, this.height-padding);
       mountainBasePoints.push([x, y]);
     }
-    console.log("Mountain base points: ");
-    console.log(mountainBasePoints);
+    // console.log("Mountain base points: ");
+    // console.log(mountainBasePoints);
     let voronoiDiagram = Delaunay.from(mountainBasePoints)
     .voronoi([0, 0, this.width, this.height]);
 
@@ -76,6 +76,7 @@ export class World {
         }
       }
     }
+    console.log("all mountains: ")
     for (let i = 0; i < this.mountains.length; i++) {
       this.mountains[i].recoverEpisodes(); // recover from pops and shifts
       console.log(this.mountains[i].episodes);
@@ -154,26 +155,27 @@ export class World {
   }
 
   processCombiningQueue() {
+    console.log("Combining Queue:");
+    console.log(this.combiningQueue);
     if (this.combiningQueue.length > 1) {
       for (let i = 0; i < this.combiningQueue.length; i++) {
         for (let j = i+1; j < this.combiningQueue.length; j++) {
           if (this.combiningQueue[i][1] === this.combiningQueue[j][1]) {
-            // found the same episodes appearing twice. Combine the two sets of points! 
-            console.log("processing queue!!!");
+            // found the same episodes appearing twice. Combine the two sets of points!  
             let combinedPoints = Episode.combineEpisodePoints(this.combiningQueue[i][2], this.combiningQueue[j][2]);
             let transformData = Episode.calcScaleAndTranslationGivenPoints(combinedPoints);
             let mtn = this.getMountain(this.combiningQueue[i][0]);
             let combinedEps = mtn.getEpisode(this.combiningQueue[i][1]);
             combinedEps.lineWeight = (this.combiningQueue[i][3] + this.combiningQueue[j][3])/2;
             combinedEps.lineColor = blendColors(this.combiningQueue[i][4], this.combiningQueue[j][4], 0.5);
-            combinedEps.points = combinedEps;
+            combinedEps.points = combinedPoints;
             combinedEps.selectionScale = transformData[0];
             combinedEps.selectionTranslation = transformData[1];
 
             this.combiningQueue.splice(j, 1);
             this.combiningQueue.splice(i, 1);
 
-            this.render();
+            //this.render();
             return;
           }
         }
