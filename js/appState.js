@@ -12,5 +12,6 @@ export class AppState {
     static textBuffer = "";
     static textLabel;
 
-    static defaultEpisodeCountPerMountain = 3;
+    static defaultEpisodeCountPerMountain = 1;
+    static numOfMountainsToGenerate = 5;
 }

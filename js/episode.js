@@ -116,6 +116,7 @@ export class Episode {
       transformData[1],
       "episode".concat(uuidv4())); 
 
+    newEps.text = eps1.text.concat(" ".concat(eps2.text));
     return newEps;
   }
 

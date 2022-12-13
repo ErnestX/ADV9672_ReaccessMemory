@@ -7,7 +7,7 @@ AppState.height = 600;
 document.getElementById('SvgContour').style.width = AppState.width.toString().concat("px");
 document.getElementById('SvgContour').style.height = AppState.height.toString().concat("px");
 
-const world = new World(AppState.width, AppState.height, 5);
+const world = new World(AppState.width, AppState.height, AppState.numOfMountainsToGenerate);
 world.render();
 
 document.addEventListener("keydown", function(event) {
