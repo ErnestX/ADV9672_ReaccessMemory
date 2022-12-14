@@ -171,7 +171,7 @@ export class Episode {
     d3
     .select('path#'.concat(thisObj.identity))
     .transition()
-    .duration(2000)
+    .duration(1000)
     .attr("stroke-width", 1 / scale)
     .attr('transform', function(d, i) {
       return "translate(" + translation[0] + "," + translation[1] + ") scale(" + scale + ")";
@@ -184,7 +184,7 @@ export class Episode {
     d3
     .select('path#'.concat(thisObj.identity))
     .transition()
-    .duration(2000)
+    .duration(1000)
     .attr("stroke-width", 1)
     .attr("stroke", rgb(255, 255, 255))
     .attr('transform', function(d, i) {
@@ -209,7 +209,7 @@ export class Episode {
         return "translate(" + translation[0] + "," + translation[1] + ") scale(" + scale + ")";
       })
       .transition()
-      .duration(2000)
+      .duration(1000)
       .attr("stroke-width", thisObj.lineWeight)
       .attr('transform', function(d, i) {
         return "translate(0,0) scale(1)";
@@ -227,7 +227,7 @@ export class Episode {
       return "translate(" + thisObj.selectionTranslation[0] + "," + thisObj.selectionTranslation[1] + ") scale(" + thisObj.selectionScale + ")";
     })
     .transition()
-    .duration(2000)
+    .duration(1000)
     .attr("stroke-width", thisObj.lineWeight)
     .attr("stroke", thisObj.lineColor)
     .attr('transform', function(d, i) {
